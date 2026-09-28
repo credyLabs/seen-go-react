@@ -7,7 +7,8 @@
 
 @theme inline {
     --font-heading: var(--font-sans);
-    --font-sans: 'Inter Variable', sans-serif;
+    /* Single source of truth for the app font; change it here only */
+    --font-sans: 'Inter Variable', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Tamil', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -25,6 +26,10 @@
     --color-input: var(--input);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
+    --color-success-foreground: var(--success-foreground);
+    --color-success: var(--success);
+    --color-brand-navy: var(--brand-primary);
+    --color-brand-copper: var(--brand-copper);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
     --color-muted-foreground: var(--muted-foreground);
@@ -49,72 +54,91 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
+    /* Brand palette */
+    --brand-primary: #0d2b45;
+    --brand-secondary: #6b4c3b;
+    --brand-text: #071027;
+    --brand-text-muted: #5b6472;
+    --brand-surface-strong: #dce2e9;
+    --brand-surface-muted: #eef2f7;
+    --brand-surface: #ffffff;
+    --brand-background: #f5ede3;
+    --brand-success: #00a159;
+    --brand-error: #df2225;
+    --brand-copper: #c9a07f;
+    --brand-copper-mid: #a0714f;
+
+    --background: var(--brand-background);
+    --foreground: var(--brand-text);
+    --card: var(--brand-surface);
+    --card-foreground: var(--brand-text);
+    --popover: var(--brand-surface);
+    --popover-foreground: var(--brand-text);
+    --primary: var(--brand-primary);
+    --primary-foreground: var(--brand-surface);
+    --secondary: var(--brand-secondary);
+    --secondary-foreground: var(--brand-surface);
+    --muted: var(--brand-surface-muted);
+    --muted-foreground: var(--brand-text-muted);
+    --accent: var(--brand-surface-strong);
+    --accent-foreground: var(--brand-primary);
+    --destructive: var(--brand-error);
+    --success: var(--brand-success);
+    --success-foreground: var(--brand-surface);
+    --border: var(--brand-surface-strong);
+    --input: var(--brand-surface-strong);
+    --ring: var(--brand-primary);
+    --chart-1: var(--brand-primary);
+    --chart-2: var(--brand-secondary);
+    --chart-3: var(--brand-success);
+    --chart-4: var(--brand-text-muted);
+    --chart-5: var(--brand-error);
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --sidebar: var(--brand-surface);
+    --sidebar-foreground: var(--brand-text);
+    --sidebar-primary: var(--brand-primary);
+    --sidebar-primary-foreground: var(--brand-surface);
+    --sidebar-accent: var(--brand-surface-muted);
+    --sidebar-accent-foreground: var(--brand-primary);
+    --sidebar-border: var(--brand-surface-strong);
+    --sidebar-ring: var(--brand-primary);
 }
 
+/* Dark theme derived from the same palette: navy surfaces, light text */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
+    --background: var(--brand-text);
+    --foreground: var(--brand-surface-muted);
+    --card: var(--brand-primary);
+    --card-foreground: var(--brand-surface-muted);
+    --popover: var(--brand-primary);
+    --popover-foreground: var(--brand-surface-muted);
+    --primary: var(--brand-surface-strong);
+    --primary-foreground: var(--brand-primary);
+    --secondary: var(--brand-secondary);
+    --secondary-foreground: var(--brand-background);
+    --muted: var(--brand-primary);
+    --muted-foreground: #9aa3b0;
+    --accent: #16395a;
+    --accent-foreground: var(--brand-surface-muted);
+    --destructive: var(--brand-error);
+    --success: var(--brand-success);
+    --success-foreground: var(--brand-surface);
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --ring: var(--brand-surface-strong);
+    --chart-1: var(--brand-surface-strong);
+    --chart-2: var(--brand-background);
+    --chart-3: var(--brand-success);
+    --chart-4: #9aa3b0;
+    --chart-5: var(--brand-error);
+    --sidebar: var(--brand-primary);
+    --sidebar-foreground: var(--brand-surface-muted);
+    --sidebar-primary: var(--brand-surface-strong);
+    --sidebar-primary-foreground: var(--brand-primary);
+    --sidebar-accent: #16395a;
+    --sidebar-accent-foreground: var(--brand-surface-muted);
     --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --sidebar-ring: var(--brand-surface-strong);
 }
 
 @layer base {
@@ -126,5 +150,30 @@
     }
   html {
     @apply font-sans;
+    /* Global UI scale: all text, spacing and icons are rem-based, so this shrinks everything
+       proportionally (14px vs the 16px default). Tweak here to resize the whole app. */
+    font-size: 87.5%;
     }
+}
+/* Copper gradient used for primary auth CTAs and the active tab */
+@utility bg-brand-gradient {
+  background-image: linear-gradient(
+    90deg,
+    var(--brand-secondary) 0%,
+    var(--brand-copper-mid) 50%,
+    var(--brand-copper) 100%
+  );
+}
+
+/* For API text that may be in another script than the page (e.g. English
+   product copy on the Arabic site): orders characters by the text's own
+   direction. It also aligns to that direction, so add rtl:text-right where
+   the text should stay right-aligned on RTL pages */
+@utility text-bidi-plain {
+  unicode-bidi: plaintext;
+}
+
+/* Shared page width + side padding for header, footer and page content */
+@utility site-container {
+  @apply mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8 xl:px-10;
 }

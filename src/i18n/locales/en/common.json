@@ -1,5 +1,96 @@
 {
   "welcome": "Welcome",
+  "landing": {
+    "hero": {
+      "label": "Featured offers",
+      "goToSlide": "Go to slide {{number}}"
+    },
+    "categories": {
+      "title": "Shop by category",
+      "subtitle": "Curated departments across every premium electronics need."
+    },
+    "deals": {
+      "eyebrow": "Limited time",
+      "title": "Today's deals",
+      "subtitle": "Hand-picked offers from authorised UAE distributors.",
+      "seeAll": "See all deals"
+    },
+    "product": {
+      "addToCart": "Add {{name}} to cart",
+      "rating": "Rated {{rating}} out of 5 from {{count}} reviews",
+      "badges": {
+        "bestseller": "Bestseller",
+        "new": "New",
+        "deal": "Deal"
+      }
+    },
+    "trending": {
+      "eyebrow": "Loved this week",
+      "title": "Trending now",
+      "subtitle": "What customers across Dubai, Abu Dhabi and Sharjah are buying.",
+      "seeAll": "Browse trending"
+    },
+    "collections": {
+      "title": "Curated collections",
+      "subtitle": "Tailored picks for the way you live, work and create.",
+      "explore": "Explore",
+      "items": {
+        "backToWork": {
+          "eyebrow": "Productivity",
+          "title": "Back to work",
+          "description": "Laptops, monitors, and noise-cancelling sets ready for the new quarter."
+        },
+        "creatorsKit": {
+          "eyebrow": "Photo + Video",
+          "title": "Creator's kit",
+          "description": "Cameras, drones and audio gear chosen for Dubai shoots."
+        },
+        "familyBundles": {
+          "eyebrow": "Home",
+          "title": "Family bundles",
+          "description": "Smart TVs, consoles and home audio with installation included."
+        },
+        "travelLight": {
+          "eyebrow": "On the go",
+          "title": "Travel light",
+          "description": "Ultra-portable laptops, ANC earbuds and chargers under 100g."
+        }
+      }
+    },
+    "brands": {
+      "title": "Top brands",
+      "subtitle": "Authorised distribution for the brands customers across the UAE trust.",
+      "seeAll": "All brands",
+      "productCount_one": "{{count}} product",
+      "productCount_other": "{{count}} products"
+    },
+    "featured": {
+      "eyebrow": "Editor's choice",
+      "title": "Featured this season",
+      "seeAll": "Show all products"
+    },
+    "highlights": {
+      "label": "Why shop with Seengo",
+      "items": {
+        "warranty": {
+          "title": "UAE warranty included",
+          "description": "Every product ships with the original UAE / GCC manufacturer warranty."
+        },
+        "delivery": {
+          "title": "Free next-day delivery",
+          "description": "Across all seven emirates. Same-day in Dubai and Abu Dhabi."
+        },
+        "installments": {
+          "title": "0% installments",
+          "description": "Split any order over AED 500 across 4 or 12 months, interest free."
+        },
+        "returns": {
+          "title": "15-day returns",
+          "description": "No questions asked. Free pickup from your home or office."
+        }
+      }
+    }
+  },
   "save": "Save",
   "cancel": "Cancel",
   "edit": "Edit",
@@ -14,5 +105,206 @@
   "confirm": "Confirm",
   "yes": "Yes",
   "no": "No",
-  "logout": "Logout"
+  "logout": "Logout",
+  "login": "Login",
+  "home": "Home",
+  "dashboard": "Dashboard",
+  "auth": {
+    "login": "Login",
+    "signUp": "Sign Up",
+    "backToSite": "Back to Seengo.ae",
+    "panelAlt": "SeenGo — Shop smarter. Deliver faster. Live better. Free delivery across all 7 Emirates.",
+    "welcomeBack": "Welcome Back",
+    "loginSubtitle": "Sign in to your Seengo account to continue shopping",
+    "email": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot your password?",
+    "signInButton": "Sign In to Your Account",
+    "orContinueWith": "or continue with",
+    "noAccount": "Don’t have an account?",
+    "createOneFree": "Create one free",
+    "createAccountTitle": "Create Your Account",
+    "signupSubtitle": "Join thousands of SeenGo shoppers",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Deepak",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Raj",
+    "createPasswordPlaceholder": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "createAccountButton": "Create Account",
+    "orSignUpWith": "or sign up with",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "passwordMismatch": "Passwords do not match",
+    "google": "Google",
+    "twitter": "Twitter",
+    "sslEncrypted": "SSL Encrypted",
+    "uaeDataProtected": "UAE Data Protected",
+    "secureLogin": "Secure Login",
+    "secureRegistration": "Secure Registration",
+    "copyright": "© {{year}} Seengo.com. All rights reserved.",
+    "uaeDataProtection": "UAE Data Protection",
+    "encryption": "256-bit Encryption",
+    "signInEyebrow": "Sign in"
+  },
+  "header": {
+    "phone": "800-SEENGO",
+    "delivering": "Delivering across all 7 emirates",
+    "trackOrder": "Track your order",
+    "sellOnSeengo": "Sell on Seengo",
+    "searchPlaceholder": "Search iPhone, MacBook, headphones, brands...",
+    "search": "Search",
+    "signIn": "Sign in",
+    "compare": "Compare",
+    "wishlist": "Wishlist",
+    "cart": "Cart",
+    "account": "Account",
+    "myAccount": "My account",
+    "orders": "My orders",
+    "allCategories": "All categories",
+    "categories": {
+      "smartphones": "Smartphones",
+      "laptops": "Laptops",
+      "audio": "Audio",
+      "wearables": "Wearables",
+      "tablets": "Tablets",
+      "gaming": "Gaming",
+      "smartHome": "Smart Home",
+      "cameras": "Cameras",
+      "accessories": "Accessories",
+      "earbuds": "Earbuds",
+      "monitors": "Monitors",
+      "consoles": "Consoles",
+      "fitnessTrackers": "Fitness Trackers",
+      "eReaders": "E-Readers",
+      "drones": "Drones",
+      "chargers": "Chargers",
+      "refurbished": "Refurbished",
+      "brands": "Brands",
+      "deals": "Deals"
+    },
+    "megaMenu": {
+      "viewAll": "View all",
+      "loading": "Loading categories…",
+      "error": "Couldn't load categories. Please try again."
+    }
+  },
+  "footer": {
+    "tagline": "Seengo is the UAE’s premium electronics marketplace.",
+    "emailPlaceholder": "Get deals",
+    "subscribe": "Subscribe",
+    "shop": "Shop",
+    "help": "Help",
+    "company": "Company",
+    "legal": "Legal",
+    "allBrands": "All brands",
+    "orderTracking": "Order tracking",
+    "returns": "Returns & refunds",
+    "warranty": "Warranty",
+    "shipping": "Shipping",
+    "faq": "FAQ",
+    "about": "About Seengo",
+    "careers": "Careers",
+    "press": "Press",
+    "sellWithUs": "Sell with us",
+    "affiliate": "Affiliate",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "vatInfo": "VAT info",
+    "tradeLicense": "Trade license",
+    "copyright": "© {{year}} Seengo Marketplace · Dubai, UAE · Trade licence #SG-2026-118",
+    "cod": "COD"
+  },
+  "productPage": {
+    "showImage": "Show image {{number}}",
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
+    "save": "Save {{percent}}%",
+    "vatNote": "Inclusive of 5% VAT · or {{amount}}/mo with 0% installments",
+    "color": "Color",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "addToCompare": "Add to compare",
+    "share": "Share",
+    "linkCopied": "Link copied",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock",
+    "readReviews_one": "Read {{formatted}} review",
+    "readReviews_other": "Read {{formatted}} reviews",
+    "perks": {
+      "sameDay": "Free same-day delivery in Dubai",
+      "sameDayCountdown": "Order within {{hours}}h {{minutes}}m for same-day delivery",
+      "sameDayTomorrow": "Order now for delivery tomorrow",
+      "warranty_one": "{{count}} year {{brand}} Gulf warranty",
+      "warranty_other": "{{count}} year {{brand}} Gulf warranty",
+      "warrantyNote": "Authorised UAE distributor",
+      "returns": "15-day free returns",
+      "returnsNote": "Free pickup from your home",
+      "installments": "0% installments",
+      "installmentsNote": "4 payments with Tabby or Tamara"
+    },
+    "deliverTo": "Deliver to {{area}}",
+    "change": "change",
+    "deliveryEta": "Free standard delivery · arrives tomorrow, {{date}} by 9 PM",
+    "tabs": {
+      "overview": "Overview",
+      "specs": "Specifications",
+      "reviews": "Reviews ({{count}})",
+      "delivery": "Delivery & warranty"
+    },
+    "reviewsBasedOn_one": "Based on {{formatted}} review",
+    "reviewsBasedOn_other": "Based on {{formatted}} reviews",
+    "writeReview": "Write a review",
+    "policies": {
+      "delivery": {
+        "title": "Delivery",
+        "body": "Free standard delivery across all seven emirates. Same-day delivery in Dubai for orders placed before 4 PM."
+      },
+      "returns": {
+        "title": "Returns",
+        "body": "Return within 15 days in the original packaging. We pick it up from your home or office for free."
+      },
+      "warranty": {
+        "title": "Warranty",
+        "body_one": "{{count}} year official {{brand}} Gulf warranty, serviced by authorised UAE service centres.",
+        "body_other": "{{count}} year official {{brand}} Gulf warranty, serviced by authorised UAE service centres."
+      }
+    },
+    "bundle": {
+      "title": "Frequently bought together",
+      "total": "Bundle total",
+      "save": "Save {{amount}} when bought together",
+      "addToCart": "Add bundle to cart"
+    },
+    "similar": "Similar products",
+    "alsoViewed": "Customers also viewed",
+    "notFound": {
+      "title": "Product not found",
+      "body": "This product may have been removed or the link is incorrect.",
+      "back": "Back to home"
+    },
+    "playVideo": "Play product video",
+    "seeAllSimilar": "See all similar",
+    "seeAllProducts": "See all products"
+  },
+  "videoPlayer": {
+    "label": "Video: {{title}}",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "volume": "Volume",
+    "seek": "Seek",
+    "timeOf": "{{current}} of {{total}}",
+    "speed": "Playback speed {{speed}}×",
+    "fullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen"
+  }
 }

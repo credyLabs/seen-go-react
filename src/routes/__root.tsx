@@ -1,38 +1,30 @@
-import { LanguageSwitcher } from "@/components/language-switcher"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Button } from "@/components/ui/button"
-import { Outlet, createRootRoute } from "@tanstack/react-router"
+import { SiteFooter } from "@/components/layout/site-footer"
+import { SiteHeader } from "@/components/layout/site-header"
+import type { AuthContext } from "@/lib/auth"
+import type { QueryClient } from "@tanstack/react-query"
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
-import * as React from "react"
-import { useTranslation } from "react-i18next"
-export const Route = createRootRoute({
+
+interface RouterContext {
+  auth: AuthContext
+  queryClient: QueryClient
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
 })
 
+// Every page (public, auth, private) shares the site header and footer.
+// The header switches between "Sign in" and the profile menu based on auth state.
 function RootComponent() {
-  const { t } = useTranslation()
   return (
-    <React.Fragment>
-      <div>
-        <ModeToggle />
-        <LanguageSwitcher />
-
-        <div className="flex min-h-svh p-6">
-          <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-            <div>
-              <h1 className="font-medium">Project ready!</h1>
-              <p>You may now add components and start building.</p>
-              <p>We&apos;ve already added the button component for you.</p>
-              <Button className="mt-2">{t("welcome")}</Button>
-            </div>
-            <div className="font-mono text-xs text-muted-foreground">
-              (Press <kbd>d</kbd> to toggle dark mode)
-            </div>
-          </div>
-        </div>
-      </div>
-      <Outlet />
+    <div className="flex min-h-svh flex-col">
+      <SiteHeader />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <SiteFooter />
       <TanStackRouterDevtools />
-    </React.Fragment>
+    </div>
   )
 }

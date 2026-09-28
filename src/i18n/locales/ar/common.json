@@ -1,5 +1,100 @@
 {
   "welcome": "مرحباً",
+  "landing": {
+    "hero": {
+      "label": "عروض مميزة",
+      "goToSlide": "انتقل إلى الشريحة {{number}}"
+    },
+    "categories": {
+      "title": "تسوّق حسب الفئة",
+      "subtitle": "أقسام مختارة تلبي كل احتياجاتك من الإلكترونيات المميزة."
+    },
+    "deals": {
+      "eyebrow": "لفترة محدودة",
+      "title": "عروض اليوم",
+      "subtitle": "عروض مختارة من موزعين معتمدين في الإمارات.",
+      "seeAll": "عرض جميع العروض"
+    },
+    "product": {
+      "addToCart": "أضف {{name}} إلى السلة",
+      "rating": "التقييم {{rating}} من 5 بناءً على {{count}} مراجعة",
+      "badges": {
+        "bestseller": "الأكثر مبيعاً",
+        "new": "جديد",
+        "deal": "عرض"
+      }
+    },
+    "trending": {
+      "eyebrow": "الأكثر إعجاباً هذا الأسبوع",
+      "title": "الرائج الآن",
+      "subtitle": "ما يشتريه العملاء في دبي وأبوظبي والشارقة.",
+      "seeAll": "تصفح الرائج"
+    },
+    "collections": {
+      "title": "مجموعات مختارة",
+      "subtitle": "اختيارات مصممة لأسلوب حياتك وعملك وإبداعك.",
+      "explore": "استكشف",
+      "items": {
+        "backToWork": {
+          "eyebrow": "الإنتاجية",
+          "title": "العودة إلى العمل",
+          "description": "أجهزة لابتوب وشاشات وسماعات عازلة للضوضاء جاهزة للربع الجديد."
+        },
+        "creatorsKit": {
+          "eyebrow": "صور + فيديو",
+          "title": "عُدّة صانع المحتوى",
+          "description": "كاميرات وطائرات مسيّرة ومعدات صوت مختارة للتصوير في دبي."
+        },
+        "familyBundles": {
+          "eyebrow": "المنزل",
+          "title": "باقات العائلة",
+          "description": "تلفزيونات ذكية وأجهزة ألعاب وأنظمة صوت منزلية مع التركيب."
+        },
+        "travelLight": {
+          "eyebrow": "أثناء التنقل",
+          "title": "سافر بخفة",
+          "description": "لابتوبات خفيفة وسماعات بخاصية إلغاء الضوضاء وشواحن أقل من 100 غرام."
+        }
+      }
+    },
+    "brands": {
+      "title": "أفضل العلامات التجارية",
+      "subtitle": "توزيع معتمد للعلامات التجارية التي يثق بها العملاء في جميع أنحاء الإمارات.",
+      "seeAll": "جميع العلامات التجارية",
+      "productCount_zero": "لا توجد منتجات",
+      "productCount_one": "منتج واحد",
+      "productCount_two": "منتجان",
+      "productCount_few": "{{count}} منتجات",
+      "productCount_many": "{{count}} منتجًا",
+      "productCount_other": "{{count}} منتج"
+    },
+    "featured": {
+      "eyebrow": "اختيار المحرر",
+      "title": "مميز هذا الموسم",
+      "seeAll": "عرض جميع المنتجات"
+    },
+    "highlights": {
+      "label": "لماذا التسوق مع سين جو",
+      "items": {
+        "warranty": {
+          "title": "ضمان الإمارات مشمول",
+          "description": "يُشحن كل منتج مع ضمان الشركة المصنّعة الأصلي في الإمارات / دول الخليج."
+        },
+        "delivery": {
+          "title": "توصيل مجاني في اليوم التالي",
+          "description": "إلى جميع الإمارات السبع. توصيل في نفس اليوم في دبي وأبوظبي."
+        },
+        "installments": {
+          "title": "أقساط بنسبة 0%",
+          "description": "قسّم أي طلب تزيد قيمته عن 500 درهم على 4 أو 12 شهرًا بدون فوائد."
+        },
+        "returns": {
+          "title": "إرجاع خلال 15 يومًا",
+          "description": "بدون أي أسئلة. استلام مجاني من منزلك أو مكتبك."
+        }
+      }
+    }
+  },
   "save": "حفظ",
   "cancel": "إلغاء",
   "edit": "تعديل",
@@ -14,5 +109,222 @@
   "confirm": "تأكيد",
   "yes": "نعم",
   "no": "لا",
-  "logout": "تسجيل الخروج"
+  "logout": "تسجيل الخروج",
+  "login": "تسجيل الدخول",
+  "home": "الرئيسية",
+  "dashboard": "لوحة التحكم",
+  "auth": {
+    "login": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "backToSite": "العودة إلى Seengo.ae",
+    "panelAlt": "SeenGo — تسوّق بذكاء. توصيل أسرع. حياة أفضل.",
+    "welcomeBack": "مرحباً بعودتك",
+    "loginSubtitle": "سجّل الدخول إلى حسابك في Seengo لمتابعة التسوق",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "you@example.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "signInButton": "تسجيل الدخول إلى حسابك",
+    "orContinueWith": "أو تابع باستخدام",
+    "noAccount": "ليس لديك حساب؟",
+    "createOneFree": "أنشئ حساباً مجاناً",
+    "createAccountTitle": "أنشئ حسابك",
+    "signupSubtitle": "انضم إلى آلاف المتسوقين في SeenGo",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "Deepak",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "Raj",
+    "createPasswordPlaceholder": "أنشئ كلمة مرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أكّد كلمة المرور",
+    "createAccountButton": "إنشاء الحساب",
+    "orSignUpWith": "أو سجّل باستخدام",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "passwordMismatch": "كلمتا المرور غير متطابقتين",
+    "google": "Google",
+    "twitter": "Twitter",
+    "sslEncrypted": "تشفير SSL",
+    "uaeDataProtected": "بيانات محمية في الإمارات",
+    "secureLogin": "تسجيل دخول آمن",
+    "secureRegistration": "تسجيل آمن",
+    "copyright": "© {{year}} Seengo.com. جميع الحقوق محفوظة.",
+    "uaeDataProtection": "حماية البيانات في الإمارات",
+    "encryption": "تشفير 256 بت",
+    "signInEyebrow": "تسجيل الدخول"
+  },
+  "header": {
+    "phone": "800-SEENGO",
+    "delivering": "التوصيل إلى جميع الإمارات السبع",
+    "trackOrder": "تتبّع طلبك",
+    "sellOnSeengo": "بِع على Seengo",
+    "searchPlaceholder": "ابحث عن iPhone وMacBook وسماعات وعلامات تجارية...",
+    "search": "بحث",
+    "signIn": "تسجيل الدخول",
+    "compare": "مقارنة",
+    "wishlist": "المفضلة",
+    "cart": "السلة",
+    "account": "الحساب",
+    "myAccount": "حسابي",
+    "orders": "طلباتي",
+    "allCategories": "جميع الفئات",
+    "categories": {
+      "smartphones": "الهواتف الذكية",
+      "laptops": "أجهزة اللابتوب",
+      "audio": "الصوتيات",
+      "wearables": "الأجهزة القابلة للارتداء",
+      "tablets": "الأجهزة اللوحية",
+      "gaming": "الألعاب",
+      "smartHome": "المنزل الذكي",
+      "cameras": "الكاميرات",
+      "accessories": "الإكسسوارات",
+      "earbuds": "سماعات الأذن",
+      "monitors": "الشاشات",
+      "consoles": "أجهزة الألعاب",
+      "fitnessTrackers": "أجهزة تتبع اللياقة",
+      "eReaders": "القارئات الإلكترونية",
+      "drones": "الطائرات المسيّرة",
+      "chargers": "الشواحن",
+      "refurbished": "مجددة",
+      "brands": "العلامات التجارية",
+      "deals": "العروض"
+    },
+    "megaMenu": {
+      "viewAll": "عرض الكل",
+      "loading": "جارٍ تحميل الفئات…",
+      "error": "تعذّر تحميل الفئات. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "footer": {
+    "tagline": "Seengo هو السوق الإلكتروني الأول للإلكترونيات الفاخرة في الإمارات.",
+    "emailPlaceholder": "احصل على العروض",
+    "subscribe": "اشترك",
+    "shop": "تسوّق",
+    "help": "المساعدة",
+    "company": "الشركة",
+    "legal": "قانوني",
+    "allBrands": "جميع العلامات التجارية",
+    "orderTracking": "تتبّع الطلب",
+    "returns": "الإرجاع والاسترداد",
+    "warranty": "الضمان",
+    "shipping": "الشحن",
+    "faq": "الأسئلة الشائعة",
+    "about": "عن Seengo",
+    "careers": "الوظائف",
+    "press": "الصحافة",
+    "sellWithUs": "بِع معنا",
+    "affiliate": "التسويق بالعمولة",
+    "terms": "الشروط",
+    "privacy": "الخصوصية",
+    "cookies": "ملفات تعريف الارتباط",
+    "vatInfo": "معلومات ضريبة القيمة المضافة",
+    "tradeLicense": "الرخصة التجارية",
+    "copyright": "© {{year}} Seengo Marketplace · دبي، الإمارات · رخصة تجارية #SG-2026-118",
+    "cod": "الدفع عند الاستلام"
+  },
+  "productPage": {
+    "showImage": "عرض الصورة {{number}}",
+    "addToWishlist": "أضف إلى قائمة الأمنيات",
+    "removeFromWishlist": "إزالة من قائمة الأمنيات",
+    "save": "وفّر {{percent}}%",
+    "vatNote": "شامل ضريبة القيمة المضافة 5% · أو {{amount}} شهريًا بأقساط 0%",
+    "color": "اللون",
+    "quantity": "الكمية",
+    "decrease": "إنقاص الكمية",
+    "increase": "زيادة الكمية",
+    "addToCart": "أضف إلى السلة",
+    "buyNow": "اشترِ الآن",
+    "addToCompare": "أضف للمقارنة",
+    "share": "مشاركة",
+    "linkCopied": "تم نسخ الرابط",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "readReviews_zero": "لا توجد مراجعات",
+    "readReviews_one": "اقرأ مراجعة واحدة",
+    "readReviews_two": "اقرأ مراجعتين",
+    "readReviews_few": "اقرأ {{formatted}} مراجعات",
+    "readReviews_many": "اقرأ {{formatted}} مراجعة",
+    "readReviews_other": "اقرأ {{formatted}} مراجعة",
+    "perks": {
+      "sameDay": "توصيل مجاني في نفس اليوم في دبي",
+      "sameDayCountdown": "اطلب خلال {{hours}} س {{minutes}} د للتوصيل في نفس اليوم",
+      "sameDayTomorrow": "اطلب الآن للتوصيل غدًا",
+      "warranty_zero": "ضمان {{brand}} الخليجي",
+      "warranty_one": "ضمان {{brand}} الخليجي لمدة سنة",
+      "warranty_two": "ضمان {{brand}} الخليجي لمدة سنتين",
+      "warranty_few": "ضمان {{brand}} الخليجي لمدة {{count}} سنوات",
+      "warranty_many": "ضمان {{brand}} الخليجي لمدة {{count}} سنة",
+      "warranty_other": "ضمان {{brand}} الخليجي لمدة {{count}} سنة",
+      "warrantyNote": "موزع معتمد في الإمارات",
+      "returns": "إرجاع مجاني خلال 15 يومًا",
+      "returnsNote": "استلام مجاني من منزلك",
+      "installments": "أقساط بنسبة 0%",
+      "installmentsNote": "4 دفعات مع تابي أو تمارا"
+    },
+    "deliverTo": "التوصيل إلى {{area}}",
+    "change": "تغيير",
+    "deliveryEta": "توصيل عادي مجاني · يصل غدًا، {{date}} بحلول 9 مساءً",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "specs": "المواصفات",
+      "reviews": "المراجعات ({{count}})",
+      "delivery": "التوصيل والضمان"
+    },
+    "reviewsBasedOn_zero": "لا توجد مراجعات بعد",
+    "reviewsBasedOn_one": "بناءً على مراجعة واحدة",
+    "reviewsBasedOn_two": "بناءً على مراجعتين",
+    "reviewsBasedOn_few": "بناءً على {{formatted}} مراجعات",
+    "reviewsBasedOn_many": "بناءً على {{formatted}} مراجعة",
+    "reviewsBasedOn_other": "بناءً على {{formatted}} مراجعة",
+    "writeReview": "اكتب مراجعة",
+    "policies": {
+      "delivery": {
+        "title": "التوصيل",
+        "body": "توصيل عادي مجاني إلى جميع الإمارات السبع. توصيل في نفس اليوم في دبي للطلبات قبل الساعة 4 مساءً."
+      },
+      "returns": {
+        "title": "الإرجاع",
+        "body": "أرجع المنتج خلال 15 يومًا في عبوته الأصلية. سنستلمه مجانًا من منزلك أو مكتبك."
+      },
+      "warranty": {
+        "title": "الضمان",
+        "body_zero": "ضمان {{brand}} الخليجي الرسمي، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
+        "body_one": "ضمان {{brand}} الخليجي الرسمي لمدة سنة، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
+        "body_two": "ضمان {{brand}} الخليجي الرسمي لمدة سنتين، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
+        "body_few": "ضمان {{brand}} الخليجي الرسمي لمدة {{count}} سنوات، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
+        "body_many": "ضمان {{brand}} الخليجي الرسمي لمدة {{count}} سنة، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
+        "body_other": "ضمان {{brand}} الخليجي الرسمي لمدة {{count}} سنة، تتم خدمته في مراكز صيانة معتمدة في الإمارات."
+      }
+    },
+    "bundle": {
+      "title": "اشتريت معاً في الغالب",
+      "total": "إجمالي الحزمة",
+      "save": "وفّر {{amount}} عند الشراء معًا",
+      "addToCart": "إضافة الحزمة إلى السلة"
+    },
+    "similar": "منتجات مشابهة",
+    "alsoViewed": "شاهد أيضاً",
+    "notFound": {
+      "title": "المنتج غير موجود",
+      "body": "ربما تمت إزالة هذا المنتج أو أن الرابط غير صحيح.",
+      "back": "العودة إلى الرئيسية"
+    },
+    "playVideo": "تشغيل فيديو المنتج",
+    "seeAllSimilar": "عرض كل المنتجات المشابهة",
+    "seeAllProducts": "عرض جميع المنتجات"
+  },
+  "videoPlayer": {
+    "label": "فيديو: {{title}}",
+    "play": "تشغيل",
+    "pause": "إيقاف مؤقت",
+    "mute": "كتم الصوت",
+    "unmute": "إلغاء كتم الصوت",
+    "volume": "مستوى الصوت",
+    "seek": "التقديم",
+    "timeOf": "{{current}} من {{total}}",
+    "speed": "سرعة التشغيل {{speed}}×",
+    "fullscreen": "ملء الشاشة",
+    "exitFullscreen": "الخروج من ملء الشاشة"
+  }
 }
