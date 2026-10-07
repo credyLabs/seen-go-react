@@ -1,9 +1,13 @@
+import { signIn } from "@/api/auth"
+import { ApiError } from "@/api/http"
 import { useCompleteAuth } from "@/components/auth/use-complete-auth"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useMutation } from "@tanstack/react-query"
 import { Link, createFileRoute } from "@tanstack/react-router"
+import { Loader2 } from "lucide-react"
 import type * as React from "react"
 import { useTranslation } from "react-i18next"
 
@@ -16,17 +20,33 @@ function LoginPage() {
   const completeAuth = useCompleteAuth()
   const search = Route.useSearch()
 
+  const signInMutation = useMutation({
+    mutationFn: signIn,
+    onSuccess: ({ accessToken, user }) => {
+      // name may be empty; fall back to the email's local part for the greeting
+      const [firstName = "", ...rest] = (user.name.trim() || user.email.split("@")[0]).split(/\s+/)
+      // TODO: keep refreshToken/expiresIn and renew via POST /auth/refresh once token storage is decided
+      completeAuth(accessToken, { firstName, lastName: rest.join(" "), email: user.email })
+    },
+  })
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const form = new FormData(event.currentTarget)
-    const email = String(form.get("email"))
-    // TODO: replace with a real API call that returns the token and user
-    completeAuth("demo-token", {
-      firstName: email.split("@")[0],
-      lastName: "",
-      email,
+    signInMutation.mutate({
+      username: String(form.get("email")).trim(),
+      password: String(form.get("password")),
     })
   }
+
+  const error = signInMutation.error
+  const errorMessage = !error
+    ? null
+    : error instanceof ApiError && error.status === 0
+      ? t("auth.errors.network")
+      : error instanceof ApiError && (error.status === 400 || error.status === 401)
+        ? t("auth.errors.invalidCredentials")
+        : t("auth.errors.generic")
 
   return (
     <div className="flex flex-col gap-5">
@@ -83,11 +103,19 @@ function LoginPage() {
             />
           </Field>
 
+          {errorMessage && (
+            <p role="alert" className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {errorMessage}
+            </p>
+          )}
+
           <Button
             type="submit"
+            disabled={signInMutation.isPending}
             className="mt-1 h-9 rounded-full bg-brand-gradient text-white shadow-md hover:opacity-90"
           >
-            {t("auth.signInButton")}
+            {signInMutation.isPending && <Loader2 className="animate-spin" />}
+            {t(signInMutation.isPending ? "auth.signingIn" : "auth.signInButton")}
           </Button>
         </FieldGroup>
       </form>

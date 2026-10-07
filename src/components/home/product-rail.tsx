@@ -1,4 +1,4 @@
-import type { Product } from "@/api/products"
+import type { ProductCardData } from "@/api/products"
 import { ScrollRail } from "@/components/home/scroll-rail"
 import { ProductCard } from "@/components/product/product-card"
 import { CarouselItem } from "@/components/ui/carousel"
@@ -7,14 +7,15 @@ interface ProductRailProps {
   eyebrow?: string
   title: string
   subtitle?: string
-  seeAllLabel: string
+  seeAllLabel?: string
   seeAllHref?: string
   alwaysShowSeeAll?: boolean
-  products: Product[]
+  products: ProductCardData[]
 }
 
 // A titled, horizontally scrollable row of product cards
 export function ProductRail({ products, ...rail }: ProductRailProps) {
+  if (products.length === 0) return null
   return (
     <ScrollRail {...rail}>
       {products.map((product) => (

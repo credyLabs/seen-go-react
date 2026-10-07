@@ -1,47 +1,59 @@
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ScrollRail } from "@/components/home/scroll-rail"
 import { CarouselItem } from "@/components/ui/carousel"
 
-// TODO: replace with brands from the API and point hrefs at brand routes
-const BRANDS = [
-  { id: "apple", name: "Apple", productCount: 48 },
-  { id: "samsung", name: "Samsung", productCount: 62 },
-  { id: "sony", name: "Sony", productCount: 39 },
-  { id: "bose", name: "Bose", productCount: 21 },
-  { id: "dji", name: "DJI", productCount: 18 },
-  { id: "dell", name: "Dell", productCount: 27 },
-  { id: "lg", name: "LG", productCount: 34 },
-  { id: "asus", name: "ASUS", productCount: 29 },
-  { id: "microsoft", name: "Microsoft", productCount: 15 },
-  { id: "huawei", name: "Huawei", productCount: 22 },
-  { id: "lenovo", name: "Lenovo", productCount: 31 },
-  { id: "jbl", name: "JBL", productCount: 24 },
-]
+export interface BrandTile {
+  id: string
+  name: string
+  logoUrl: string | null
+}
 
-export function TopBrands() {
+// Shows the logo when it loads, otherwise just the name
+function BrandLogo({ src }: { src: string }) {
+  const [failed, setFailed] = useState(false)
+  if (failed) return null
+  return (
+    <img
+      src={src}
+      alt=""
+      draggable={false}
+      loading="lazy"
+      onError={() => setFailed(true)}
+      className="h-8 max-w-24 object-contain select-none"
+    />
+  )
+}
+
+export function TopBrands({
+  title,
+  subtitle,
+  brands,
+}: {
+  title: string
+  subtitle?: string
+  brands: BrandTile[]
+}) {
   const { t } = useTranslation()
 
   return (
     <ScrollRail
-      title={t("landing.brands.title")}
-      subtitle={t("landing.brands.subtitle")}
+      title={title}
+      subtitle={subtitle}
       seeAllLabel={t("landing.brands.seeAll")}
       contentClassName="-ms-3"
     >
-      {BRANDS.map((brand) => (
+      {brands.map((brand) => (
         <CarouselItem key={brand.id} className="basis-auto ps-3">
+          {/* TODO: link to the brand listing once the search page exists */}
           <a
             href="#"
             draggable={false}
-            className="flex w-32 flex-col items-center gap-1 rounded-2xl border bg-card px-3 py-5 text-center transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+            className="flex h-full min-h-20 w-32 flex-col items-center justify-center gap-2 rounded-2xl border bg-card px-3 py-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
           >
-            <span className="line-clamp-1 text-base font-bold tracking-tight">
-              {brand.name}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {t("landing.brands.productCount", { count: brand.productCount })}
-            </span>
+            {brand.logoUrl && <BrandLogo src={brand.logoUrl} />}
+            <span className="line-clamp-1 text-base font-bold tracking-tight">{brand.name}</span>
           </a>
         </CarouselItem>
       ))}

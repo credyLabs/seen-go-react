@@ -17,7 +17,7 @@ import { CategoryMegaMenu } from "@/components/layout/category-mega-menu"
 import { SiteLogo } from "@/components/layout/site-logo"
 import { UserMenu } from "@/components/layout/user-menu"
 import { ModeToggle } from "@/components/mode-toggle"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import {
   InputGroup,
   InputGroupAddon,
@@ -25,8 +25,11 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { signInRedirect } from "@/hooks/use-require-auth"
 import { useAuth } from "@/lib/auth"
 import { cn } from "@/lib/utils"
+import { selectCartCount, useCartStore } from "@/stores/cart-store"
+import { useWishlistStore } from "@/stores/wishlist-store"
 
 const CATEGORIES = [
   "smartphones",
@@ -39,8 +42,6 @@ const CATEGORIES = [
   "cameras",
   "brands",
 ] as const
-
-const AUTH_PATHS = ["/login", "/signup"]
 
 function TopBar() {
   const { t } = useTranslation()
@@ -232,15 +233,28 @@ function SearchForm({ className }: { className?: string }) {
   )
 }
 
+// Small count bubble on the header's cart and wishlist icons
+function CountBadge({ count }: { count: number }) {
+  if (count === 0) return null
+  return (
+    <span
+      aria-hidden
+      className="absolute -end-0.5 -top-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-secondary px-1 text-[10px] font-semibold text-secondary-foreground"
+    >
+      {count > 99 ? "99+" : count}
+    </span>
+  )
+}
+
 function AccountActions() {
   const { t } = useTranslation()
   const { isAuthenticated } = useAuth()
   const location = useLocation()
+  const cartCount = useCartStore(selectCartCount)
+  const wishlistCount = useWishlistStore((state) => state.items.length)
 
   // Bring the user back to this page after signing in (not from the auth pages themselves)
-  const redirect = AUTH_PATHS.includes(location.pathname)
-    ? undefined
-    : location.href
+  const redirect = signInRedirect(location)
 
   return (
     <div className="ms-auto flex items-center gap-1">
@@ -259,22 +273,32 @@ function AccountActions() {
           <span className="hidden sm:inline">{t("header.signIn")}</span>
         </Link>
       )}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="size-10 rounded-full"
-        aria-label={t("header.wishlist")}
+      {/* The wishlist page is private, so guests are sent to sign in */}
+      <Link
+        to="/wishlist"
+        aria-label={t("header.wishlistCount", { count: wishlistCount })}
+        className={buttonVariants({
+          variant: "ghost",
+          size: "icon",
+          className: "relative size-10 rounded-full",
+        })}
       >
         <Heart />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="size-10 rounded-full"
-        aria-label={t("header.cart")}
+        <CountBadge count={wishlistCount} />
+      </Link>
+      {/* The cart page is public; guests see a sign-in prompt there */}
+      <Link
+        to="/cart"
+        aria-label={t("header.cartCount", { count: cartCount })}
+        className={buttonVariants({
+          variant: "ghost",
+          size: "icon",
+          className: "relative size-10 rounded-full",
+        })}
       >
         <ShoppingBag />
-      </Button>
+        <CountBadge count={cartCount} />
+      </Link>
     </div>
   )
 }
