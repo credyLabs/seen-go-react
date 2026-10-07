@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router"
-import { ChevronDown, LayoutDashboard, LogOut, Package } from "lucide-react"
+import { ChevronDown, Heart, LayoutDashboard, LogOut, Package, UserCog } from "lucide-react"
 import { flushSync } from "react-dom"
 import { useTranslation } from "react-i18next"
 
@@ -13,6 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/lib/auth"
+import { useCartStore } from "@/stores/cart-store"
+import { useWishlistStore } from "@/stores/wishlist-store"
 
 export function UserMenu() {
   const { t } = useTranslation()
@@ -24,6 +26,10 @@ export function UserMenu() {
     // Commit the new auth state so the router context is current, then re-run
     // guards: private pages redirect to /login, public pages stay put
     flushSync(() => auth.logout())
+    // Cart and wishlist live on this device until their APIs are wired, so
+    // don't leave them for whoever signs in next
+    useCartStore.getState().clear()
+    useWishlistStore.getState().clear()
     await router.invalidate()
   }
 
@@ -69,10 +75,17 @@ export function UserMenu() {
           <LayoutDashboard />
           {t("header.myAccount")}
         </DropdownMenuItem>
-        {/* TODO: link to the orders page once it exists */}
-        <DropdownMenuItem>
+        <DropdownMenuItem render={<Link to="/profile" />}>
+          <UserCog />
+          {t("header.profileSettings")}
+        </DropdownMenuItem>
+        <DropdownMenuItem render={<Link to="/orders" />}>
           <Package />
           {t("header.orders")}
+        </DropdownMenuItem>
+        <DropdownMenuItem render={<Link to="/wishlist" />}>
+          <Heart />
+          {t("header.myWishlist")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={handleLogout}>

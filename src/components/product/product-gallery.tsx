@@ -2,26 +2,22 @@ import { Heart, Play } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
-import type { ProductBadge, ProductMedia } from "@/api/products"
+import type { ProductDetail } from "@/api/products"
 import { BADGE_CLASS } from "@/components/product/product-badge"
 import { VideoPlayer } from "@/components/video-player"
+import { useRequireAuth } from "@/hooks/use-require-auth"
 import { cn } from "@/lib/utils"
+import { useIsWishlisted, useWishlistStore } from "@/stores/wishlist-store"
 
-export function ProductGallery({
-  media,
-  name,
-  badge,
-}: {
-  media: ProductMedia[]
-  name: string
-  badge?: ProductBadge
-}) {
+export function ProductGallery({ product }: { product: ProductDetail }) {
+  const { gallery: media, name, badge } = product
   const { t } = useTranslation()
   const [active, setActive] = useState(0)
   // Only autoplay a video the user picked, not one that happens to be first
   const [userPicked, setUserPicked] = useState(false)
-  // TODO: persist to the wishlist once it exists
-  const [wishlisted, setWishlisted] = useState(false)
+  const wishlisted = useIsWishlisted(product.id)
+  const toggleWishlist = useWishlistStore((state) => state.toggle)
+  const requireAuth = useRequireAuth()
   const current = media[active]
 
   return (
@@ -95,7 +91,23 @@ export function ProductGallery({
           type="button"
           aria-pressed={wishlisted}
           aria-label={t(wishlisted ? "productPage.removeFromWishlist" : "productPage.addToWishlist")}
-          onClick={() => setWishlisted((value) => !value)}
+          onClick={() =>
+            requireAuth(() =>
+              // Only what the wishlist card needs, not the whole product page data
+              toggleWishlist({
+                id: product.id,
+                name: product.name,
+                image: product.image,
+                brand: product.brand,
+                description: product.description,
+                badge: product.badge,
+                rating: product.rating,
+                reviewCount: product.reviewCount,
+                price: product.price,
+                originalPrice: product.originalPrice,
+              })
+            )
+          }
           className="absolute end-4 top-4 flex size-10 items-center justify-center rounded-full bg-white text-brand-navy shadow-md transition-transform hover:scale-105"
         >
           <Heart className={cn("size-5", wishlisted && "fill-destructive text-destructive")} />

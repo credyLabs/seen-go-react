@@ -3,7 +3,8 @@
   "landing": {
     "hero": {
       "label": "عروض مميزة",
-      "goToSlide": "انتقل إلى الشريحة {{number}}"
+      "goToSlide": "انتقل إلى الشريحة {{number}}",
+      "startingFrom": "ابتداءً من:"
     },
     "categories": {
       "title": "تسوّق حسب الفئة",
@@ -21,8 +22,10 @@
       "badges": {
         "bestseller": "الأكثر مبيعاً",
         "new": "جديد",
-        "deal": "عرض"
-      }
+        "deal": "عرض",
+        "hot": "رائج"
+      },
+      "priceUnavailable": "السعر غير متوفر"
     },
     "trending": {
       "eyebrow": "الأكثر إعجاباً هذا الأسبوع",
@@ -93,6 +96,12 @@
           "description": "بدون أي أسئلة. استلام مجاني من منزلك أو مكتبك."
         }
       }
+    },
+    "loading": "جارٍ التحميل",
+    "error": {
+      "title": "تعذّر تحميل المتجر",
+      "body": "تحقق من اتصالك وحاول مرة أخرى.",
+      "retry": "حاول مرة أخرى"
     }
   },
   "save": "حفظ",
@@ -152,7 +161,13 @@
     "copyright": "© {{year}} Seengo.com. جميع الحقوق محفوظة.",
     "uaeDataProtection": "حماية البيانات في الإمارات",
     "encryption": "تشفير 256 بت",
-    "signInEyebrow": "تسجيل الدخول"
+    "signInEyebrow": "تسجيل الدخول",
+    "signingIn": "جارٍ تسجيل الدخول…",
+    "errors": {
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      "network": "تعذّر الاتصال بالخادم. تحقق من اتصالك وحاول مرة أخرى.",
+      "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    }
   },
   "header": {
     "phone": "800-SEENGO",
@@ -194,7 +209,21 @@
       "viewAll": "عرض الكل",
       "loading": "جارٍ تحميل الفئات…",
       "error": "تعذّر تحميل الفئات. يرجى المحاولة مرة أخرى."
-    }
+    },
+    "myWishlist": "قائمة أمنياتي",
+    "cartCount_zero": "السلة، فارغة",
+    "cartCount_one": "السلة، منتج واحد",
+    "cartCount_two": "السلة، منتجان",
+    "cartCount_few": "السلة، {{count}} منتجات",
+    "cartCount_many": "السلة، {{count}} منتجًا",
+    "cartCount_other": "السلة، {{count}} منتج",
+    "wishlistCount_zero": "قائمة الأمنيات، فارغة",
+    "wishlistCount_one": "قائمة الأمنيات، منتج واحد",
+    "wishlistCount_two": "قائمة الأمنيات، منتجان",
+    "wishlistCount_few": "قائمة الأمنيات، {{count}} منتجات",
+    "wishlistCount_many": "قائمة الأمنيات، {{count}} منتجًا",
+    "wishlistCount_other": "قائمة الأمنيات، {{count}} منتج",
+    "profileSettings": "إعدادات الملف الشخصي"
   },
   "footer": {
     "tagline": "Seengo هو السوق الإلكتروني الأول للإلكترونيات الفاخرة في الإمارات.",
@@ -228,14 +257,12 @@
     "addToWishlist": "أضف إلى قائمة الأمنيات",
     "removeFromWishlist": "إزالة من قائمة الأمنيات",
     "save": "وفّر {{percent}}%",
-    "vatNote": "شامل ضريبة القيمة المضافة 5% · أو {{amount}} شهريًا بأقساط 0%",
     "color": "اللون",
     "quantity": "الكمية",
     "decrease": "إنقاص الكمية",
     "increase": "زيادة الكمية",
     "addToCart": "أضف إلى السلة",
     "buyNow": "اشترِ الآن",
-    "addToCompare": "أضف للمقارنة",
     "share": "مشاركة",
     "linkCopied": "تم نسخ الرابط",
     "inStock": "متوفر",
@@ -246,25 +273,6 @@
     "readReviews_few": "اقرأ {{formatted}} مراجعات",
     "readReviews_many": "اقرأ {{formatted}} مراجعة",
     "readReviews_other": "اقرأ {{formatted}} مراجعة",
-    "perks": {
-      "sameDay": "توصيل مجاني في نفس اليوم في دبي",
-      "sameDayCountdown": "اطلب خلال {{hours}} س {{minutes}} د للتوصيل في نفس اليوم",
-      "sameDayTomorrow": "اطلب الآن للتوصيل غدًا",
-      "warranty_zero": "ضمان {{brand}} الخليجي",
-      "warranty_one": "ضمان {{brand}} الخليجي لمدة سنة",
-      "warranty_two": "ضمان {{brand}} الخليجي لمدة سنتين",
-      "warranty_few": "ضمان {{brand}} الخليجي لمدة {{count}} سنوات",
-      "warranty_many": "ضمان {{brand}} الخليجي لمدة {{count}} سنة",
-      "warranty_other": "ضمان {{brand}} الخليجي لمدة {{count}} سنة",
-      "warrantyNote": "موزع معتمد في الإمارات",
-      "returns": "إرجاع مجاني خلال 15 يومًا",
-      "returnsNote": "استلام مجاني من منزلك",
-      "installments": "أقساط بنسبة 0%",
-      "installmentsNote": "4 دفعات مع تابي أو تمارا"
-    },
-    "deliverTo": "التوصيل إلى {{area}}",
-    "change": "تغيير",
-    "deliveryEta": "توصيل عادي مجاني · يصل غدًا، {{date}} بحلول 9 مساءً",
     "tabs": {
       "overview": "نظرة عامة",
       "specs": "المواصفات",
@@ -277,32 +285,6 @@
     "reviewsBasedOn_few": "بناءً على {{formatted}} مراجعات",
     "reviewsBasedOn_many": "بناءً على {{formatted}} مراجعة",
     "reviewsBasedOn_other": "بناءً على {{formatted}} مراجعة",
-    "writeReview": "اكتب مراجعة",
-    "policies": {
-      "delivery": {
-        "title": "التوصيل",
-        "body": "توصيل عادي مجاني إلى جميع الإمارات السبع. توصيل في نفس اليوم في دبي للطلبات قبل الساعة 4 مساءً."
-      },
-      "returns": {
-        "title": "الإرجاع",
-        "body": "أرجع المنتج خلال 15 يومًا في عبوته الأصلية. سنستلمه مجانًا من منزلك أو مكتبك."
-      },
-      "warranty": {
-        "title": "الضمان",
-        "body_zero": "ضمان {{brand}} الخليجي الرسمي، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
-        "body_one": "ضمان {{brand}} الخليجي الرسمي لمدة سنة، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
-        "body_two": "ضمان {{brand}} الخليجي الرسمي لمدة سنتين، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
-        "body_few": "ضمان {{brand}} الخليجي الرسمي لمدة {{count}} سنوات، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
-        "body_many": "ضمان {{brand}} الخليجي الرسمي لمدة {{count}} سنة، تتم خدمته في مراكز صيانة معتمدة في الإمارات.",
-        "body_other": "ضمان {{brand}} الخليجي الرسمي لمدة {{count}} سنة، تتم خدمته في مراكز صيانة معتمدة في الإمارات."
-      }
-    },
-    "bundle": {
-      "title": "اشتريت معاً في الغالب",
-      "total": "إجمالي الحزمة",
-      "save": "وفّر {{amount}} عند الشراء معًا",
-      "addToCart": "إضافة الحزمة إلى السلة"
-    },
     "similar": "منتجات مشابهة",
     "alsoViewed": "شاهد أيضاً",
     "notFound": {
@@ -311,8 +293,12 @@
       "back": "العودة إلى الرئيسية"
     },
     "playVideo": "تشغيل فيديو المنتج",
-    "seeAllSimilar": "عرض كل المنتجات المشابهة",
-    "seeAllProducts": "عرض جميع المنتجات"
+    "addedToCart": "تمت الإضافة إلى السلة",
+    "recommended": "موصى به لك",
+    "loading": "جارٍ تحميل المنتج",
+    "reviewsError": "تعذّر تحميل المراجعات.",
+    "noWrittenReviews": "لا توجد مراجعات مكتوبة بعد.",
+    "verifiedPurchase": "عملية شراء موثقة"
   },
   "videoPlayer": {
     "label": "فيديو: {{title}}",
@@ -326,5 +312,179 @@
     "speed": "سرعة التشغيل {{speed}}×",
     "fullscreen": "ملء الشاشة",
     "exitFullscreen": "الخروج من ملء الشاشة"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "emptyTitle": "سلتك فارغة",
+    "emptyGuest": "يبدو أنك لم تضف أي شيء إلى سلتك بعد. سجّل الدخول لرؤية المنتجات التي ربما أضفتها سابقًا.",
+    "emptySignedIn": "يبدو أنك لم تضف أي شيء إلى سلتك بعد.",
+    "signIn": "تسجيل الدخول",
+    "continueShopping": "متابعة التسوق",
+    "discount": "الخصم",
+    "total": "الإجمالي",
+    "summary": "ملخص الطلب",
+    "free": "مجاني",
+    "checkout": "المتابعة إلى الدفع",
+    "itemCount_zero": "لا توجد منتجات",
+    "itemCount_one": "منتج واحد",
+    "itemCount_two": "منتجان",
+    "itemCount_few": "{{count}} منتجات",
+    "itemCount_many": "{{count}} منتجًا",
+    "itemCount_other": "{{count}} منتج",
+    "color": "اللون: {{color}}",
+    "freeDelivery": "توصيل مجاني إلى دبي بحلول {{date}}",
+    "save": "وفّر {{amount}}",
+    "removeAction": "إزالة",
+    "saveForLater": "احفظ لوقت لاحق",
+    "promoPlaceholder": "رمز الخصم",
+    "apply": "تطبيق",
+    "promoUnavailable": "لا يمكن تطبيق رموز الخصم بعد.",
+    "shipping": "الشحن",
+    "vat": "ضريبة القيمة المضافة ({{rate}}%)",
+    "subtotalItems_zero": "المجموع الفرعي",
+    "subtotalItems_one": "المجموع الفرعي (منتج واحد)",
+    "subtotalItems_two": "المجموع الفرعي (منتجان)",
+    "subtotalItems_few": "المجموع الفرعي ({{count}} منتجات)",
+    "subtotalItems_many": "المجموع الفرعي ({{count}} منتجًا)",
+    "subtotalItems_other": "المجموع الفرعي ({{count}} منتج)",
+    "trust": {
+      "secure": "دفع آمن",
+      "returns": "إرجاع مجاني خلال 15 يومًا",
+      "warranty": "ضمان رسمي"
+    },
+    "removeDialog": {
+      "title": "إزالة من السلة؟",
+      "body": "هل تود حفظ هذا المنتج في قائمة أمنياتك قبل إزالته من السلة؟",
+      "bodyNoWishlist": "ستتم إزالة هذا المنتج من سلتك.",
+      "moveToWishlist": "نقل إلى قائمة الأمنيات",
+      "remove": "إزالة المنتج"
+    }
+  },
+  "orders": {
+    "title": "طلباتي",
+    "myAccount": "حسابي",
+    "filter": "تصفية الطلبات",
+    "loading": "جارٍ تحميل طلباتك",
+    "loadError": "تعذّر تحميل طلباتك",
+    "emptyTitle": "لم تقم بأي طلب بعد",
+    "noMatchTitle": "لا توجد طلبات مطابقة للتصفية",
+    "searchPlaceholder": "ابحث برقم الطلب أو اسم المنتج...",
+    "tabs": {
+      "all": "جميع الطلبات",
+      "processing": "قيد المعالجة",
+      "shipped": "تم الشحن",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغاة"
+    },
+    "status": {
+      "processing": "قيد المعالجة",
+      "shipped": "تم الشحن",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغى"
+    },
+    "orderNumber": "رقم الطلب",
+    "placedOn": "تاريخ الطلب",
+    "totalAmount": "المبلغ الإجمالي",
+    "quantity_zero": "الكمية: {{count}}",
+    "quantity_one": "الكمية: {{count}}",
+    "quantity_two": "الكمية: {{count}}",
+    "quantity_few": "الكمية: {{count}}",
+    "quantity_many": "الكمية: {{count}}",
+    "quantity_other": "الكمية: {{count}}",
+    "moreItems_zero": "",
+    "moreItems_one": "+ منتج آخر",
+    "moreItems_two": "+ منتجان آخران",
+    "moreItems_few": "+{{count}} منتجات أخرى",
+    "moreItems_many": "+{{count}} منتجًا آخر",
+    "moreItems_other": "+{{count}} منتج آخر",
+    "needHelp": "تحتاج مساعدة بخصوص هذا الطلب؟",
+    "contactSupport": "تواصل مع الدعم",
+    "viewDetails": "عرض التفاصيل",
+    "trackOrder": "تتبع الطلب",
+    "buyAgain": "اشترِ مجددًا",
+    "reorder": "إعادة الطلب",
+    "rate": "قيّم مشترياتك",
+    "writeReview": "اكتب مراجعة",
+    "pagination": "ترقيم الصفحات",
+    "previousPage": "الصفحة السابقة",
+    "nextPage": "الصفحة التالية"
+  },
+  "wishlist": {
+    "title": "قائمة أمنياتي",
+    "remove": "إزالة",
+    "emptyTitle": "قائمة أمنياتك فارغة",
+    "emptyBody": "اضغط على القلب في أي منتج لحفظه هنا لوقت لاحق.",
+    "itemCount_zero": "لا توجد منتجات",
+    "itemCount_one": "منتج واحد",
+    "itemCount_two": "منتجان",
+    "itemCount_few": "{{count}} منتجات",
+    "itemCount_many": "{{count}} منتجًا",
+    "itemCount_other": "{{count}} منتج"
+  },
+  "profile": {
+    "title": "إعدادات الملف الشخصي",
+    "subtitle": "أدِر معلوماتك الشخصية وكلمة المرور وتفضيلات الإشعارات.",
+    "loading": "جارٍ تحميل ملفك الشخصي",
+    "loadError": "تعذّر تحميل ملفك الشخصي",
+    "changePhoto": "تغيير الصورة",
+    "photoType": "اختر ملف صورة.",
+    "photoSize": "يجب ألا يتجاوز حجم الصورة {{size}} ميغابايت.",
+    "photoError": "تعذّر رفع الصورة. يرجى المحاولة مرة أخرى.",
+    "personalInfo": "المعلومات الشخصية",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "emailHint": "بريدك الإلكتروني هو اسم الدخول ولا يمكن تغييره هنا.",
+    "phone": "رقم الهاتف",
+    "changePassword": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordPlaceholder_zero": "{{count}} أحرف على الأقل",
+    "newPasswordPlaceholder_one": "{{count}} أحرف على الأقل",
+    "newPasswordPlaceholder_two": "{{count}} أحرف على الأقل",
+    "newPasswordPlaceholder_few": "{{count}} أحرف على الأقل",
+    "newPasswordPlaceholder_many": "{{count}} أحرف على الأقل",
+    "newPasswordPlaceholder_other": "{{count}} أحرف على الأقل",
+    "confirmPassword": "تأكيد كلمة المرور الجديدة",
+    "confirmPasswordPlaceholder": "أكّد كلمة المرور الجديدة",
+    "updatePassword": "تحديث كلمة المرور",
+    "passwordUpdated": "تم تحديث كلمة المرور",
+    "passwordError": "تعذّر تحديث كلمة المرور. يرجى المحاولة مرة أخرى.",
+    "passwordUnavailable": "تغيير كلمة المرور غير متاح بعد.",
+    "notifications": "تفضيلات الإشعارات",
+    "preferences": {
+      "email": {
+        "title": "إشعارات البريد الإلكتروني",
+        "description": "إيصالات الطلبات وتنبيهات أمان الحساب"
+      },
+      "sms": {
+        "title": "الرسائل النصية",
+        "description": "تحديثات تتبع حالة التوصيل"
+      },
+      "orderUpdates": {
+        "title": "تحديثات الطلبات",
+        "description": "إشعارات فورية بتقدم الطلب"
+      },
+      "promotions": {
+        "title": "العروض الترويجية",
+        "description": "عروض مخصصة وحملات موسمية"
+      }
+    },
+    "saveChanges": "حفظ التغييرات",
+    "saved": "تم حفظ التغييرات",
+    "saveError": "تعذّر حفظ التغييرات. يرجى المحاولة مرة أخرى.",
+    "errors": {
+      "firstNameRequired": "أدخل اسمك الأول.",
+      "phoneInvalid": "أدخل رقم هاتف صحيحًا، مثل ‎+971 50 123 4567.",
+      "currentRequired": "أدخل كلمة المرور الحالية.",
+      "currentIncorrect": "كلمة المرور الحالية غير صحيحة.",
+      "passwordLength_zero": "استخدم {{count}} أحرف على الأقل.",
+      "passwordLength_one": "استخدم {{count}} أحرف على الأقل.",
+      "passwordLength_two": "استخدم {{count}} أحرف على الأقل.",
+      "passwordLength_few": "استخدم {{count}} أحرف على الأقل.",
+      "passwordLength_many": "استخدم {{count}} أحرف على الأقل.",
+      "passwordLength_other": "استخدم {{count}} أحرف على الأقل.",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين."
+    }
   }
 }

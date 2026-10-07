@@ -1,15 +1,19 @@
-import { ArrowLeftRight, Check, Minus, Plus, Share2, ShoppingBag } from "lucide-react"
+import { Check, Minus, Plus, Share2, ShoppingBag } from "lucide-react"
+import { useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import type { ProductDetail } from "@/api/products"
 import { discountPercent } from "@/components/product/product-badge"
 import { Button } from "@/components/ui/button"
+import { useRequireAuth } from "@/hooks/use-require-auth"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/utils"
+import { useCartStore } from "@/stores/cart-store"
 
-const INSTALLMENT_MONTHS = 12
+// Fallback when the product has no quantity limit of its own
 const MAX_QUANTITY = 10
+// How long "Link copied" / "Added to cart" stay before the label resets
 const COPIED_RESET_MS = 2000
 
 export function ProductPurchase({ product }: { product: ProductDetail }) {
@@ -18,8 +22,30 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
   const [colorIndex, setColorIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [copied, setCopied] = useState(false)
+  const [added, setAdded] = useState(false)
+  const requireAuth = useRequireAuth()
+  const navigate = useNavigate()
+  const addToCart = useCartStore((state) => state.addItem)
   const discount = discountPercent(product)
+  const hasPrice = product.price > 0
+  const canBuy = hasPrice && product.inStock !== false
   const color = product.colors[colorIndex]
+
+  // TODO: POST /cart/items with the chosen listing once the cart API is wired
+  const addSelection = () =>
+    addToCart(
+      {
+        productId: product.id,
+        slug: product.id,
+        name: product.name,
+        brand: product.brand,
+        image: product.image,
+        variant: color?.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+      },
+      quantity
+    )
 
   const share = async () => {
     const url = window.location.href
@@ -35,7 +61,8 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
 
   return (
     <div className="flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-xs">
-      <div>
+      {/* No price from the API means there's nothing to sell yet */}
+      {hasPrice && (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <span className="text-3xl font-bold tracking-tight">
             {formatPrice(product.price, lang)}
@@ -51,12 +78,7 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
             </span>
           )}
         </div>
-        <p className="mt-1.5 text-xs text-muted-foreground">
-          {t("productPage.vatNote", {
-            amount: formatPrice(Math.round(product.price / INSTALLMENT_MONTHS), lang),
-          })}
-        </p>
-      </div>
+      )}
 
       {color && (
         <div className="flex flex-col gap-2">
@@ -101,24 +123,38 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
           <button
             type="button"
             aria-label={t("productPage.increase")}
-            disabled={quantity >= MAX_QUANTITY}
+            disabled={quantity >= (product.maxQuantity ?? MAX_QUANTITY)}
             onClick={() => setQuantity((q) => q + 1)}
             className="flex size-10 items-center justify-center rounded-full disabled:opacity-40"
           >
             <Plus className="size-4" />
           </button>
         </div>
-        {/* TODO: wire to the cart and checkout once they exist */}
+        {/* Disabled only when the API says it's out of stock or has no price.
+            TODO: call the cart API / go to checkout once they exist; guests sign in first */}
         <Button
           variant="outline"
-          disabled={!product.inStock}
+          disabled={!canBuy}
+          onClick={() =>
+            requireAuth(() => {
+              addSelection()
+              setAdded(true)
+              setTimeout(() => setAdded(false), COPIED_RESET_MS)
+            })
+          }
           className="h-10 min-w-36 flex-1 rounded-full"
         >
-          <ShoppingBag />
-          {t("productPage.addToCart")}
+          {added ? <Check /> : <ShoppingBag />}
+          {t(added ? "productPage.addedToCart" : "productPage.addToCart")}
         </Button>
         <Button
-          disabled={!product.inStock}
+          disabled={!canBuy}
+          onClick={() =>
+            requireAuth(() => {
+              addSelection()
+              void navigate({ to: "/cart" })
+            })
+          }
           className="h-10 min-w-36 flex-1 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
         >
           {t("productPage.buyNow")}
@@ -126,11 +162,6 @@ export function ProductPurchase({ product }: { product: ProductDetail }) {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {/* TODO: wire to product comparison once it exists */}
-        <Button variant="outline" size="sm" className="h-7 rounded-full text-xs">
-          <ArrowLeftRight />
-          {t("productPage.addToCompare")}
-        </Button>
         <Button variant="outline" size="sm" className="h-7 rounded-full text-xs" onClick={share}>
           {copied ? <Check /> : <Share2 />}
           {t(copied ? "productPage.linkCopied" : "productPage.share")}

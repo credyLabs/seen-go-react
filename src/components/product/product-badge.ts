@@ -4,6 +4,7 @@ export const BADGE_CLASS: Record<ProductBadge, string> = {
   bestseller: "bg-brand-copper text-brand-navy",
   new: "bg-brand-navy text-white",
   deal: "bg-destructive text-white",
+  hot: "bg-orange-500 text-white",
 }
 
 export function discountPercent(product: Pick<Product, "price" | "originalPrice">) {
