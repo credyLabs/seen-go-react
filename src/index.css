@@ -177,3 +177,21 @@
 @utility site-container {
   @apply mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8 xl:px-10;
 }
+
+/* SeenGo mark animations (BrandMark): the S draws itself, the speed lines
+   stream back, the wheels turn and the cart bobs */
+@keyframes brand-draw {
+  0% { stroke-dashoffset: 1; }
+  45%, 70% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -1; }
+}
+@keyframes brand-speed {
+  to { stroke-dashoffset: 24; }
+}
+@keyframes brand-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes brand-spin {
+  to { transform: rotate(360deg); }
+}

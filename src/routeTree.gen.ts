@@ -14,9 +14,17 @@ import { Route as PrivateRouteImport } from './routes/_private'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
+import { Route as PrivateAddressesRouteImport } from './routes/_private/addresses'
+import { Route as PrivateCheckoutRouteImport } from './routes/_private/checkout'
 import { Route as PrivateDashboardRouteImport } from './routes/_private/dashboard'
+import { Route as PrivateOrdersRouteImport } from './routes/_private/orders'
+import { Route as PrivateProfileRouteImport } from './routes/_private/profile'
+import { Route as PrivateWishlistRouteImport } from './routes/_private/wishlist'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PublicCartRouteImport } from './routes/_public/cart'
+import { Route as PublicSearchRouteImport } from './routes/_public/search'
 import { Route as PublicProductsProductIdRouteImport } from './routes/_public/products/$productId'
+import { Route as CatalogueProductsSlugRouteImport } from './routes/catalogue/products/$slug'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -40,9 +48,34 @@ const AuthSignupRoute = AuthSignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => AuthRoute,
 } as any)
+const PrivateAddressesRoute = PrivateAddressesRouteImport.update({
+  id: '/addresses',
+  path: '/addresses',
+  getParentRoute: () => PrivateRoute,
+} as any)
+const PrivateCheckoutRoute = PrivateCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => PrivateRoute,
+} as any)
 const PrivateDashboardRoute = PrivateDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => PrivateRoute,
+} as any)
+const PrivateOrdersRoute = PrivateOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => PrivateRoute,
+} as any)
+const PrivateProfileRoute = PrivateProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PrivateRoute,
+} as any)
+const PrivateWishlistRoute = PrivateWishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
   getParentRoute: () => PrivateRoute,
 } as any)
 const PublicIndexRoute = PublicIndexRouteImport.update({
@@ -50,25 +83,56 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicCartRoute = PublicCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicSearchRoute = PublicSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicProductsProductIdRoute = PublicProductsProductIdRouteImport.update({
   id: '/products/$productId',
   path: '/products/$productId',
   getParentRoute: () => PublicRoute,
+} as any)
+const CatalogueProductsSlugRoute = CatalogueProductsSlugRouteImport.update({
+  id: '/catalogue/products/$slug',
+  path: '/catalogue/products/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
+  '/addresses': typeof PrivateAddressesRoute
+  '/checkout': typeof PrivateCheckoutRoute
   '/dashboard': typeof PrivateDashboardRoute
+  '/orders': typeof PrivateOrdersRoute
+  '/profile': typeof PrivateProfileRoute
+  '/wishlist': typeof PrivateWishlistRoute
+  '/cart': typeof PublicCartRoute
+  '/search': typeof PublicSearchRoute
   '/products/$productId': typeof PublicProductsProductIdRoute
+  '/catalogue/products/$slug': typeof CatalogueProductsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
+  '/addresses': typeof PrivateAddressesRoute
+  '/checkout': typeof PrivateCheckoutRoute
   '/dashboard': typeof PrivateDashboardRoute
+  '/orders': typeof PrivateOrdersRoute
+  '/profile': typeof PrivateProfileRoute
+  '/wishlist': typeof PrivateWishlistRoute
+  '/cart': typeof PublicCartRoute
+  '/search': typeof PublicSearchRoute
   '/products/$productId': typeof PublicProductsProductIdRoute
+  '/catalogue/products/$slug': typeof CatalogueProductsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,15 +141,49 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/signup': typeof AuthSignupRoute
+  '/_private/addresses': typeof PrivateAddressesRoute
+  '/_private/checkout': typeof PrivateCheckoutRoute
   '/_private/dashboard': typeof PrivateDashboardRoute
+  '/_private/orders': typeof PrivateOrdersRoute
+  '/_private/profile': typeof PrivateProfileRoute
+  '/_private/wishlist': typeof PrivateWishlistRoute
+  '/_public/cart': typeof PublicCartRoute
+  '/_public/search': typeof PublicSearchRoute
   '/_public/': typeof PublicIndexRoute
   '/_public/products/$productId': typeof PublicProductsProductIdRoute
+  '/catalogue/products/$slug': typeof CatalogueProductsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/dashboard' | '/products/$productId'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/addresses'
+    | '/checkout'
+    | '/dashboard'
+    | '/orders'
+    | '/profile'
+    | '/wishlist'
+    | '/cart'
+    | '/search'
+    | '/products/$productId'
+    | '/catalogue/products/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/dashboard' | '/products/$productId'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/addresses'
+    | '/checkout'
+    | '/dashboard'
+    | '/orders'
+    | '/profile'
+    | '/wishlist'
+    | '/cart'
+    | '/search'
+    | '/products/$productId'
+    | '/catalogue/products/$slug'
   id:
     | '__root__'
     | '/_auth'
@@ -93,15 +191,24 @@ export interface FileRouteTypes {
     | '/_public'
     | '/_auth/login'
     | '/_auth/signup'
+    | '/_private/addresses'
+    | '/_private/checkout'
     | '/_private/dashboard'
+    | '/_private/orders'
+    | '/_private/profile'
+    | '/_private/wishlist'
+    | '/_public/cart'
+    | '/_public/search'
     | '/_public/'
     | '/_public/products/$productId'
+    | '/catalogue/products/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   PrivateRoute: typeof PrivateRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
+  CatalogueProductsSlugRoute: typeof CatalogueProductsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,11 +248,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_private/addresses': {
+      id: '/_private/addresses'
+      path: '/addresses'
+      fullPath: '/addresses'
+      preLoaderRoute: typeof PrivateAddressesRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/checkout': {
+      id: '/_private/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof PrivateCheckoutRouteImport
+      parentRoute: typeof PrivateRoute
+    }
     '/_private/dashboard': {
       id: '/_private/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof PrivateDashboardRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/orders': {
+      id: '/_private/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof PrivateOrdersRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/profile': {
+      id: '/_private/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof PrivateProfileRouteImport
+      parentRoute: typeof PrivateRoute
+    }
+    '/_private/wishlist': {
+      id: '/_private/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof PrivateWishlistRouteImport
       parentRoute: typeof PrivateRoute
     }
     '/_public/': {
@@ -155,12 +297,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_public/cart': {
+      id: '/_public/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof PublicCartRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/search': {
+      id: '/_public/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof PublicSearchRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/products/$productId': {
       id: '/_public/products/$productId'
       path: '/products/$productId'
       fullPath: '/products/$productId'
       preLoaderRoute: typeof PublicProductsProductIdRouteImport
       parentRoute: typeof PublicRoute
+    }
+    '/catalogue/products/$slug': {
+      id: '/catalogue/products/$slug'
+      path: '/catalogue/products/$slug'
+      fullPath: '/catalogue/products/$slug'
+      preLoaderRoute: typeof CatalogueProductsSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -178,22 +341,36 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface PrivateRouteChildren {
+  PrivateAddressesRoute: typeof PrivateAddressesRoute
+  PrivateCheckoutRoute: typeof PrivateCheckoutRoute
   PrivateDashboardRoute: typeof PrivateDashboardRoute
+  PrivateOrdersRoute: typeof PrivateOrdersRoute
+  PrivateProfileRoute: typeof PrivateProfileRoute
+  PrivateWishlistRoute: typeof PrivateWishlistRoute
 }
 
 const PrivateRouteChildren: PrivateRouteChildren = {
+  PrivateAddressesRoute: PrivateAddressesRoute,
+  PrivateCheckoutRoute: PrivateCheckoutRoute,
   PrivateDashboardRoute: PrivateDashboardRoute,
+  PrivateOrdersRoute: PrivateOrdersRoute,
+  PrivateProfileRoute: PrivateProfileRoute,
+  PrivateWishlistRoute: PrivateWishlistRoute,
 }
 
 const PrivateRouteWithChildren =
   PrivateRoute._addFileChildren(PrivateRouteChildren)
 
 interface PublicRouteChildren {
+  PublicCartRoute: typeof PublicCartRoute
+  PublicSearchRoute: typeof PublicSearchRoute
   PublicIndexRoute: typeof PublicIndexRoute
   PublicProductsProductIdRoute: typeof PublicProductsProductIdRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
+  PublicCartRoute: PublicCartRoute,
+  PublicSearchRoute: PublicSearchRoute,
   PublicIndexRoute: PublicIndexRoute,
   PublicProductsProductIdRoute: PublicProductsProductIdRoute,
 }
@@ -205,6 +382,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   PrivateRoute: PrivateRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
+  CatalogueProductsSlugRoute: CatalogueProductsSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

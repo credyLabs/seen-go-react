@@ -6,7 +6,9 @@ export function formatPrice(value: number, lang: string) {
     currency: "AED",
     currencyDisplay: "narrowSymbol",
     numberingSystem: "latn",
-    maximumFractionDigits: 0,
+    // Whole prices stay "AED 1,499"; amounts with fils (VAT, totals) show "AED 74.95"
+    minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
+    maximumFractionDigits: 2,
   }).format(value)
 }
 

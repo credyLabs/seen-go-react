@@ -3,7 +3,8 @@
   "landing": {
     "hero": {
       "label": "Featured offers",
-      "goToSlide": "Go to slide {{number}}"
+      "goToSlide": "Go to slide {{number}}",
+      "startingFrom": "Starting from:"
     },
     "categories": {
       "title": "Shop by category",
@@ -21,8 +22,12 @@
       "badges": {
         "bestseller": "Bestseller",
         "new": "New",
-        "deal": "Deal"
-      }
+        "deal": "Deal",
+        "hot": "Hot"
+      },
+      "priceUnavailable": "Price unavailable",
+      "inCart": "{{name}} in cart",
+      "removeFromCart": "Remove from cart"
     },
     "trending": {
       "eyebrow": "Loved this week",
@@ -89,6 +94,12 @@
           "description": "No questions asked. Free pickup from your home or office."
         }
       }
+    },
+    "loading": "Loading",
+    "error": {
+      "title": "We couldn't load the store",
+      "body": "Check your connection and try again.",
+      "retry": "Try again"
     }
   },
   "save": "Save",
@@ -148,7 +159,47 @@
     "copyright": "© {{year}} Seengo.com. All rights reserved.",
     "uaeDataProtection": "UAE Data Protection",
     "encryption": "256-bit Encryption",
-    "signInEyebrow": "Sign in"
+    "signInEyebrow": "Sign in",
+    "signingIn": "Signing in…",
+    "errors": {
+      "invalidCredentials": "Incorrect email or password.",
+      "network": "Can't reach the server. Check your connection and try again.",
+      "generic": "Something went wrong. Please try again.",
+      "emailTaken": "An account with this email already exists. Try signing in instead.",
+      "passwordPolicy": "Choose a stronger password: at least 8 characters with upper and lower case letters, a number and a symbol.",
+      "invalidCode": "That code is invalid or has expired. Check the email and try again.",
+      "confirmedSignIn": "Your account is confirmed, but we couldn't sign you in automatically. Please sign in."
+    },
+    "creatingAccount": "Creating your account…",
+    "confirmTitle": "Check Your Email",
+    "confirmSubtitle": "We sent a confirmation code to",
+    "confirmCode": "Confirmation code",
+    "confirmButton": "Confirm & Sign In",
+    "confirming": "Confirming…",
+    "useDifferentEmail": "Use a different email",
+    "passwordsMatch": "Passwords match",
+    "passwordRuleUnmet": "(not met yet)",
+    "passwordStrength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "strong": "Strong"
+    },
+    "passwordRules": {
+      "length": "Min 8",
+      "upper": "Upper",
+      "lower": "Lower",
+      "number": "Digit",
+      "symbol": "Symbol"
+    },
+    "passwordRulesFull": {
+      "length": "At least 8 characters",
+      "upper": "An uppercase letter",
+      "lower": "A lowercase letter",
+      "number": "A number",
+      "symbol": "A symbol (e.g. ! @ # $)"
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "header": {
     "phone": "800-SEENGO",
@@ -165,57 +216,24 @@
     "myAccount": "My account",
     "orders": "My orders",
     "allCategories": "All categories",
-    "categories": {
-      "smartphones": "Smartphones",
-      "laptops": "Laptops",
-      "audio": "Audio",
-      "wearables": "Wearables",
-      "tablets": "Tablets",
-      "gaming": "Gaming",
-      "smartHome": "Smart Home",
-      "cameras": "Cameras",
-      "accessories": "Accessories",
-      "earbuds": "Earbuds",
-      "monitors": "Monitors",
-      "consoles": "Consoles",
-      "fitnessTrackers": "Fitness Trackers",
-      "eReaders": "E-Readers",
-      "drones": "Drones",
-      "chargers": "Chargers",
-      "refurbished": "Refurbished",
-      "brands": "Brands",
-      "deals": "Deals"
-    },
     "megaMenu": {
       "viewAll": "View all",
       "loading": "Loading categories…",
       "error": "Couldn't load categories. Please try again."
-    }
+    },
+    "myWishlist": "My wishlist",
+    "cartCount_one": "Cart, {{count}} item",
+    "cartCount_other": "Cart, {{count}} items",
+    "wishlistCount_one": "Wishlist, {{count}} item",
+    "wishlistCount_other": "Wishlist, {{count}} items",
+    "profileSettings": "Profile settings",
+    "addresses": "Saved addresses",
+    "seeAllResults": "See all results for “{{q}}”"
   },
   "footer": {
     "tagline": "Seengo is the UAE’s premium electronics marketplace.",
     "emailPlaceholder": "Get deals",
     "subscribe": "Subscribe",
-    "shop": "Shop",
-    "help": "Help",
-    "company": "Company",
-    "legal": "Legal",
-    "allBrands": "All brands",
-    "orderTracking": "Order tracking",
-    "returns": "Returns & refunds",
-    "warranty": "Warranty",
-    "shipping": "Shipping",
-    "faq": "FAQ",
-    "about": "About Seengo",
-    "careers": "Careers",
-    "press": "Press",
-    "sellWithUs": "Sell with us",
-    "affiliate": "Affiliate",
-    "terms": "Terms",
-    "privacy": "Privacy",
-    "cookies": "Cookies",
-    "vatInfo": "VAT info",
-    "tradeLicense": "Trade license",
     "copyright": "© {{year}} Seengo Marketplace · Dubai, UAE · Trade licence #SG-2026-118",
     "cod": "COD"
   },
@@ -224,35 +242,17 @@
     "addToWishlist": "Add to wishlist",
     "removeFromWishlist": "Remove from wishlist",
     "save": "Save {{percent}}%",
-    "vatNote": "Inclusive of 5% VAT · or {{amount}}/mo with 0% installments",
-    "color": "Color",
     "quantity": "Quantity",
     "decrease": "Decrease quantity",
     "increase": "Increase quantity",
     "addToCart": "Add to cart",
     "buyNow": "Buy now",
-    "addToCompare": "Add to compare",
     "share": "Share",
     "linkCopied": "Link copied",
     "inStock": "In stock",
     "outOfStock": "Out of stock",
     "readReviews_one": "Read {{formatted}} review",
     "readReviews_other": "Read {{formatted}} reviews",
-    "perks": {
-      "sameDay": "Free same-day delivery in Dubai",
-      "sameDayCountdown": "Order within {{hours}}h {{minutes}}m for same-day delivery",
-      "sameDayTomorrow": "Order now for delivery tomorrow",
-      "warranty_one": "{{count}} year {{brand}} Gulf warranty",
-      "warranty_other": "{{count}} year {{brand}} Gulf warranty",
-      "warrantyNote": "Authorised UAE distributor",
-      "returns": "15-day free returns",
-      "returnsNote": "Free pickup from your home",
-      "installments": "0% installments",
-      "installmentsNote": "4 payments with Tabby or Tamara"
-    },
-    "deliverTo": "Deliver to {{area}}",
-    "change": "change",
-    "deliveryEta": "Free standard delivery · arrives tomorrow, {{date}} by 9 PM",
     "tabs": {
       "overview": "Overview",
       "specs": "Specifications",
@@ -261,28 +261,6 @@
     },
     "reviewsBasedOn_one": "Based on {{formatted}} review",
     "reviewsBasedOn_other": "Based on {{formatted}} reviews",
-    "writeReview": "Write a review",
-    "policies": {
-      "delivery": {
-        "title": "Delivery",
-        "body": "Free standard delivery across all seven emirates. Same-day delivery in Dubai for orders placed before 4 PM."
-      },
-      "returns": {
-        "title": "Returns",
-        "body": "Return within 15 days in the original packaging. We pick it up from your home or office for free."
-      },
-      "warranty": {
-        "title": "Warranty",
-        "body_one": "{{count}} year official {{brand}} Gulf warranty, serviced by authorised UAE service centres.",
-        "body_other": "{{count}} year official {{brand}} Gulf warranty, serviced by authorised UAE service centres."
-      }
-    },
-    "bundle": {
-      "title": "Frequently bought together",
-      "total": "Bundle total",
-      "save": "Save {{amount}} when bought together",
-      "addToCart": "Add bundle to cart"
-    },
     "similar": "Similar products",
     "alsoViewed": "Customers also viewed",
     "notFound": {
@@ -291,8 +269,18 @@
       "back": "Back to home"
     },
     "playVideo": "Play product video",
-    "seeAllSimilar": "See all similar",
-    "seeAllProducts": "See all products"
+    "addedToCart": "Added to cart",
+    "recommended": "Recommended for you",
+    "loading": "Loading product",
+    "reviewsError": "We couldn't load the reviews.",
+    "noWrittenReviews": "No written reviews yet.",
+    "verifiedPurchase": "Verified purchase",
+    "boughtTogether": {
+      "title": "Frequently bought together",
+      "total_one": "Price for {{count}} item",
+      "total_other": "Total for {{count}} items",
+      "addAll": "Add all to cart"
+    }
   },
   "videoPlayer": {
     "label": "Video: {{title}}",
@@ -306,5 +294,291 @@
     "speed": "Playback speed {{speed}}×",
     "fullscreen": "Full screen",
     "exitFullscreen": "Exit full screen"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "emptyTitle": "Your Cart is Empty",
+    "emptyGuest": "Looks like you haven't added anything to your cart yet. Sign in to see items you may have added previously.",
+    "emptySignedIn": "Looks like you haven't added anything to your cart yet.",
+    "signIn": "Sign In",
+    "continueShopping": "Continue Shopping",
+    "discount": "Discount",
+    "total": "Total",
+    "summary": "Order summary",
+    "free": "Free",
+    "checkout": "Proceed to Checkout",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "color": "Color: {{color}}",
+    "freeDelivery": "Free delivery to Dubai by {{date}}",
+    "save": "Save {{amount}}",
+    "removeAction": "Remove",
+    "saveForLater": "Save for later",
+    "promoPlaceholder": "Promo code",
+    "apply": "Apply",
+    "promoUnavailable": "Promo codes can't be applied yet.",
+    "shipping": "Shipping",
+    "vat": "VAT ({{rate}}%)",
+    "subtotalItems_one": "Subtotal ({{count}} item)",
+    "subtotalItems_other": "Subtotal ({{count}} items)",
+    "trust": {
+      "secure": "Secure Checkout",
+      "returns": "Free 15-Day Returns",
+      "warranty": "Official Warranty"
+    },
+    "removeDialog": {
+      "title": "Remove from Cart?",
+      "body": "Would you like to save this item to your wishlist before removing it from your cart?",
+      "bodyNoWishlist": "This item will be removed from your cart.",
+      "moveToWishlist": "Move to Wishlist",
+      "remove": "Remove Item"
+    },
+    "errors": {
+      "notSold": "No seller has this in stock right now.",
+      "network": "Can't reach the server. Check your connection and try again.",
+      "add": "We couldn't add this to your cart. Please try again.",
+      "update": "We couldn't update the quantity. Please try again.",
+      "remove": "We couldn't remove this item. Please try again."
+    },
+    "loadError": "We couldn't load your cart",
+    "loading": "Loading your cart"
+  },
+  "orders": {
+    "title": "My Orders",
+    "myAccount": "My Account",
+    "filter": "Filter orders",
+    "loading": "Loading your orders",
+    "loadError": "We couldn't load your orders",
+    "emptyTitle": "You haven't placed any orders yet",
+    "noMatchTitle": "No orders match your filters",
+    "searchPlaceholder": "Search by Order ID or Product name...",
+    "tabs": {
+      "all": "All Orders",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "orderNumber": "Order number",
+    "placedOn": "Placed on",
+    "totalAmount": "Total Amount",
+    "quantity_one": "Quantity: {{count}}",
+    "quantity_other": "Quantity: {{count}}",
+    "moreItems_one": "+{{count}} more item",
+    "moreItems_other": "+{{count}} more items",
+    "needHelp": "Need help with this order?",
+    "contactSupport": "Contact Support",
+    "viewDetails": "View Details",
+    "trackOrder": "Track Order",
+    "buyAgain": "Buy Again",
+    "reorder": "Reorder",
+    "rate": "Rate your purchase",
+    "writeReview": "Write a Review",
+    "pagination": "Pagination",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "deliverTo": "Deliver to {{name}}:",
+    "addressesTitle": "Delivery addresses",
+    "addressesHint": "Used when you check out. Set the one you use most as default."
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "emptyTitle": "Your Wishlist is Empty",
+    "emptyBody": "Tap the heart on any product to save it here for later.",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "removeItem": "Remove {{name}} from wishlist",
+    "unavailable": "This product is no longer available.",
+    "removeUnavailable": "Remove",
+    "loadError": "We couldn't load your wishlist",
+    "loading": "Loading your wishlist",
+    "removeDialog": {
+      "title": "Remove from Wishlist?",
+      "body": "You can save it again any time from the product page.",
+      "confirm": "Remove",
+      "error": "We couldn't remove this item. Please try again."
+    }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "subtitle": "Manage your personal information, password and notification preferences.",
+    "loading": "Loading your profile",
+    "loadError": "We couldn't load your profile",
+    "changePhoto": "Change Photo",
+    "photoType": "Choose an image file.",
+    "photoSize": "The photo must be {{size}} MB or smaller.",
+    "photoError": "Couldn't upload the photo. Please try again.",
+    "personalInfo": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "emailHint": "Your email is your sign-in and can't be changed here.",
+    "phone": "Phone Number",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder_one": "At least {{count}} character",
+    "newPasswordPlaceholder_other": "At least {{count}} characters",
+    "confirmPassword": "Confirm New Password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "updatePassword": "Update Password",
+    "passwordUpdated": "Password updated",
+    "passwordError": "Couldn't update your password. Please try again.",
+    "passwordUnavailable": "Changing your password isn't available yet.",
+    "notifications": "Notification Preferences",
+    "preferences": {
+      "email": {
+        "title": "Email Notifications",
+        "description": "Order receipts, account security alerts"
+      },
+      "sms": {
+        "title": "SMS Notifications",
+        "description": "Delivery status tracking updates"
+      },
+      "orderUpdates": {
+        "title": "Order Updates",
+        "description": "Push notifications for order progress"
+      },
+      "promotions": {
+        "title": "Promotions / Offers",
+        "description": "Personalized deals and seasonal campaigns"
+      }
+    },
+    "saveChanges": "Save Changes",
+    "saved": "Changes saved",
+    "saveError": "Couldn't save your changes. Please try again.",
+    "errors": {
+      "firstNameRequired": "Enter your first name.",
+      "phoneInvalid": "Enter a valid phone number, e.g. +971 50 123 4567.",
+      "currentRequired": "Enter your current password.",
+      "currentIncorrect": "Your current password is incorrect.",
+      "passwordLength_one": "Use at least {{count}} character.",
+      "passwordLength_other": "Use at least {{count}} characters.",
+      "passwordMismatch": "The passwords don't match."
+    }
+  },
+  "listing": {
+    "allProducts": "All products",
+    "resultsFor": "Results for “{{q}}”",
+    "productsFound_one": "{{count}} product found",
+    "productsFound_other": "{{count}} products found",
+    "filters": "Filters",
+    "category": "Category",
+    "brand": "Brand",
+    "priceRange": "Price Range",
+    "minPrice": "AED Min",
+    "maxPrice": "AED Max",
+    "customerRating": "Customer Rating",
+    "andUp": "& Up",
+    "ratingOption": "{{rating}} stars & up",
+    "availability": "Availability",
+    "inStock": "In Stock",
+    "outOfStock": "Out of stock",
+    "sortBy": "Sort by:",
+    "sort": {
+      "popularity": "Popularity",
+      "newest": "Newest",
+      "price_asc": "Price: Low to High",
+      "price_desc": "Price: High to Low",
+      "name_asc": "Name: A to Z",
+      "name_desc": "Name: Z to A"
+    },
+    "view": "View",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "addToCart": "Add to Cart",
+    "loading": "Loading products",
+    "empty": {
+      "title": "No products found",
+      "body": "Try removing a filter or searching for something else.",
+      "clear": "Clear filters"
+    },
+    "error": {
+      "title": "We couldn't load the products",
+      "body": "Please check your connection and try again.",
+      "retry": "Try again"
+    },
+    "adding": "Adding…",
+    "added": "Added"
+  },
+  "addresses": {
+    "title": "Saved Addresses",
+    "subtitle": "Manage your delivery addresses for faster checkout",
+    "add": "Add New Address",
+    "loading": "Loading your addresses",
+    "emptyTitle": "No Saved Addresses Yet",
+    "emptyBody": "Add a delivery address now and checkout will be quicker next time.",
+    "default": "Default",
+    "primary": "Primary Address",
+    "setDefault": "Set as Default",
+    "edit": "Edit",
+    "delete": "Delete",
+    "labels": {
+      "home": "Home",
+      "office": "Office",
+      "family": "Family",
+      "work": "Work"
+    },
+    "form": {
+      "addTitle": "Add New Address",
+      "editTitle": "Edit Address",
+      "description": "We'll deliver to this address and use the phone number for delivery updates.",
+      "label": "Address label",
+      "labelPlaceholder": "e.g. Home, Office",
+      "fullName": "Full name",
+      "phone": "Phone number",
+      "street1": "Address line 1",
+      "street1Placeholder": "Apartment, building, street",
+      "street2": "Address line 2 (optional)",
+      "street2Placeholder": "Area or neighbourhood",
+      "city": "City",
+      "emirate": "Emirate",
+      "postalCode": "Postal code",
+      "country": "Country",
+      "makeDefault": "Set as my default address",
+      "save": "Save Address",
+      "saveChanges": "Save Changes",
+      "required": "This field is required.",
+      "phoneInvalid": "Enter a valid phone number."
+    },
+    "deleteDialog": {
+      "title": "Delete this address?",
+      "body": "“{{name}}” will be removed from your saved addresses.",
+      "confirm": "Delete Address"
+    },
+    "errors": {
+      "load": "We couldn't load your addresses",
+      "save": "We couldn't save this address. Please try again.",
+      "limit": "You've reached the maximum number of saved addresses.",
+      "delete": "We couldn't delete this address. Please try again.",
+      "setDefault": "We couldn't change your default address. Please try again."
+    }
+  },
+  "brand": {
+    "loading": "Loading",
+    "retry": "Try again"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliverTo": "Deliver to",
+    "deliverToHint": "Pick a saved address, or add a new one.",
+    "notes": "Delivery notes (optional)",
+    "notesPlaceholder": "e.g. Leave with reception",
+    "placeOrder": "Place Order",
+    "addAddressFirst": "Add a delivery address to place your order.",
+    "emptyTitle": "Your cart is empty",
+    "emptyBody": "Add something to your cart before checking out.",
+    "placedTitle": "Order placed!",
+    "placedBody": "Your order {{number}} for {{total}} has been placed. We'll let you know when it ships.",
+    "viewOrders": "View My Orders",
+    "errors": {
+      "place": "We couldn't place your order. Please try again."
+    }
   }
 }

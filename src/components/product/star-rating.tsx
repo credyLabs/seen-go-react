@@ -15,12 +15,11 @@ export function Stars({ rating, className }: { rating: number; className?: strin
         return (
           <span key={i} className={cn("relative size-3.5", className)}>
             <Star className="absolute inset-0 size-full fill-muted text-muted" />
-            <span
-              className="absolute inset-y-0 start-0 overflow-hidden"
-              style={{ width: `${fill * 100}%` }}
-            >
-              <Star className="size-full max-w-none fill-brand-copper text-brand-copper" />
-            </span>
+            {/* Full-size star clipped to the filled part (from the end side), so it never shrinks */}
+            <Star
+              className="absolute inset-0 size-full fill-brand-copper text-brand-copper [clip-path:inset(0_var(--empty)_0_0)] rtl:[clip-path:inset(0_0_0_var(--empty))]"
+              style={{ "--empty": `${(1 - fill) * 100}%` } as React.CSSProperties}
+            />
           </span>
         )
       })}

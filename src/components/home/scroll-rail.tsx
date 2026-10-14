@@ -17,7 +17,8 @@ interface ScrollRailProps {
   eyebrow?: string
   title: string
   subtitle?: string
-  seeAllLabel: string
+  // Omit to hide the "see all" link
+  seeAllLabel?: string
   // TODO: make required once the listing routes exist
   seeAllHref?: string
   // Show the "see all" link from the start instead of only once scrolled to the end
@@ -60,21 +61,25 @@ export function ScrollRail({
           <h2 id={titleId} className="text-2xl font-semibold tracking-tight">
             {title}
           </h2>
-          {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
+          {subtitle && (
+            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          )}
         </div>
         {/* Unless always shown, only offered once the user has scrolled through every item */}
-        <a
-          href={seeAllHref}
-          aria-hidden={!showSeeAll}
-          tabIndex={showSeeAll ? undefined : -1}
-          className={cn(
-            "flex shrink-0 items-center gap-1.5 text-sm font-medium transition-opacity duration-300 hover:underline",
-            showSeeAll ? "opacity-100" : "pointer-events-none opacity-0"
-          )}
-        >
-          {seeAllLabel}
-          <ArrowRight className="size-4 rtl:rotate-180" />
-        </a>
+        {seeAllLabel && (
+          <a
+            href={seeAllHref}
+            aria-hidden={!showSeeAll}
+            tabIndex={showSeeAll ? undefined : -1}
+            className={cn(
+              "flex shrink-0 items-center gap-1.5 text-sm font-medium transition-opacity duration-300 hover:underline",
+              showSeeAll ? "opacity-100" : "pointer-events-none opacity-0"
+            )}
+          >
+            {seeAllLabel}
+            <ArrowRight className="size-4 rtl:rotate-180" />
+          </a>
+        )}
       </div>
 
       <Carousel
@@ -90,7 +95,10 @@ export function ScrollRail({
         >
           {children}
         </CarouselContent>
-        <ScrollShadows canScrollPrev={canScrollPrev} canScrollNext={canScrollNext} />
+        <ScrollShadows
+          canScrollPrev={canScrollPrev}
+          canScrollNext={canScrollNext}
+        />
       </Carousel>
     </section>
   )
