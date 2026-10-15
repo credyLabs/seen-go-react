@@ -211,7 +211,17 @@
     "cartCount_other": "Cart, {{count}} items",
     "wishlistCount_one": "Wishlist, {{count}} item",
     "wishlistCount_other": "Wishlist, {{count}} items",
-    "profileSettings": "Profile settings"
+    "profileSettings": "Profile settings",
+    "addresses": "Saved addresses",
+    "seeAllResults": "See all results for “{{q}}”",
+    "menu": {
+      "orders": "My Orders",
+      "wishlist": "My Wishlist",
+      "profile": "Profile Settings",
+      "help": "Help & Support",
+      "addresses": "Saved Address",
+      "logout": "Logout"
+    }
   },
   "footer": {
     "tagline": "Seengo is the UAE’s premium electronics marketplace.",
@@ -437,6 +447,122 @@
       "passwordLength_one": "Use at least {{count}} character.",
       "passwordLength_other": "Use at least {{count}} characters.",
       "passwordMismatch": "The passwords don't match."
+    }
+  },
+  "listing": {
+    "allProducts": "All products",
+    "resultsFor": "Results for “{{q}}”",
+    "productsFound_one": "{{count}} product found",
+    "productsFound_other": "{{count}} products found",
+    "filters": "Filters",
+    "category": "Category",
+    "brand": "Brand",
+    "priceRange": "Price Range",
+    "minPrice": "AED Min",
+    "maxPrice": "AED Max",
+    "customerRating": "Customer Rating",
+    "andUp": "& Up",
+    "ratingOption": "{{rating}} stars & up",
+    "availability": "Availability",
+    "inStock": "In Stock",
+    "outOfStock": "Out of stock",
+    "sortBy": "Sort by:",
+    "sort": {
+      "popularity": "Popularity",
+      "newest": "Newest",
+      "price_asc": "Price: Low to High",
+      "price_desc": "Price: High to Low",
+      "name_asc": "Name: A to Z",
+      "name_desc": "Name: Z to A"
+    },
+    "view": "View",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "addToCart": "Add to Cart",
+    "loading": "Loading products",
+    "empty": {
+      "title": "No products found",
+      "body": "Try removing a filter or searching for something else.",
+      "clear": "Clear filters"
+    },
+    "error": {
+      "title": "We couldn't load the products",
+      "body": "Please check your connection and try again.",
+      "retry": "Try again"
+    },
+    "adding": "Adding…",
+    "added": "Added"
+  },
+  "addresses": {
+    "title": "Saved Addresses",
+    "subtitle": "Manage your delivery addresses for faster checkout",
+    "add": "Add New Address",
+    "loading": "Loading your addresses",
+    "emptyTitle": "No Saved Addresses Yet",
+    "emptyBody": "Add a delivery address now and checkout will be quicker next time.",
+    "default": "Default",
+    "primary": "Primary Address",
+    "setDefault": "Set as Default",
+    "edit": "Edit",
+    "delete": "Delete",
+    "labels": {
+      "home": "Home",
+      "office": "Office",
+      "family": "Family",
+      "work": "Work"
+    },
+    "form": {
+      "addTitle": "Add New Address",
+      "editTitle": "Edit Address",
+      "description": "We'll deliver to this address and use the phone number for delivery updates.",
+      "label": "Address label",
+      "labelPlaceholder": "e.g. Home, Office",
+      "fullName": "Full name",
+      "phone": "Phone number",
+      "street1": "Address line 1",
+      "street1Placeholder": "Apartment, building, street",
+      "street2": "Address line 2 (optional)",
+      "street2Placeholder": "Area or neighbourhood",
+      "city": "City",
+      "emirate": "Emirate",
+      "postalCode": "Postal code",
+      "country": "Country",
+      "makeDefault": "Set as my default address",
+      "save": "Save Address",
+      "saveChanges": "Save Changes",
+      "required": "This field is required.",
+      "phoneInvalid": "Enter a valid phone number."
+    },
+    "deleteDialog": {
+      "title": "Delete this address?",
+      "body": "“{{name}}” will be removed from your saved addresses.",
+      "confirm": "Delete Address"
+    },
+    "errors": {
+      "load": "We couldn't load your addresses",
+      "save": "We couldn't save this address. Please try again.",
+      "limit": "You've reached the maximum number of saved addresses.",
+      "delete": "We couldn't delete this address. Please try again.",
+      "setDefault": "We couldn't change your default address. Please try again."
+    }
+  },
+  "brand": {
+    "loading": "Loading",
+    "retry": "Try again"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliverTo": "Deliver to",
+    "deliverToHint": "Pick a saved address, or add a new one.",
+    "placeOrder": "Place Order",
+    "addAddressFirst": "Add a delivery address to place your order.",
+    "emptyTitle": "Your cart is empty",
+    "emptyBody": "Add something to your cart before checking out.",
+    "placedTitle": "Order placed!",
+    "placedBody": "Your order {{number}} for {{total}} has been placed. We'll let you know when it ships.",
+    "viewOrders": "View My Orders",
+    "errors": {
+      "place": "We couldn't place your order. Please try again."
     }
   }
 }

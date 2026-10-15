@@ -107,6 +107,7 @@ export const endpoints = {
   // order-service
   orders: {
     list: url("order", "/orders"), // GET (?page, size), POST to place an order
+    checkout: url("order", "/orders/checkout"), // POST, item snapshots + addressId
     byId: (orderId: string) => url("order", `/orders/${enc(orderId)}`), // GET
     cancel: (orderId: string) => url("order", `/orders/${enc(orderId)}/cancel`), // POST
   },

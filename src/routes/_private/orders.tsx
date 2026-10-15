@@ -56,7 +56,7 @@ function OrdersPage() {
   const visible = orders.filter((order) => {
     if (tab !== "all" && orderStage(order) !== (tab as OrderStage)) return false
     if (!term) return true
-    const names = detailById.get(order.id)?.items.map((item) => item.nameSnapshot) ?? []
+    const names = (order.items ?? detailById.get(order.id)?.items ?? []).map((item) => item.nameSnapshot)
     return [order.orderNumber, ...names].some((text) => text.toLowerCase().includes(term))
   })
 
