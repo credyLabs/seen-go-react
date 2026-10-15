@@ -1,9 +1,12 @@
 import { Link } from "@tanstack/react-router"
-import { ImageOff, ShoppingBag } from "lucide-react"
+import { ImageOff, Loader2, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import type { ProductCardData } from "@/api/products"
-import { BADGE_CLASS, discountPercent } from "@/components/product/product-badge"
+import {
+  BADGE_CLASS,
+  discountPercent,
+} from "@/components/product/product-badge"
 import { StarRating } from "@/components/product/star-rating"
 import { Button } from "@/components/ui/button"
 import {
@@ -13,23 +16,46 @@ import {
   CardFooter,
   CardTitle,
 } from "@/components/ui/card"
-import { useRequireAuth } from "@/hooks/use-require-auth"
+import { useCartCounter } from "@/hooks/use-cart-counter"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/utils"
-import { useCartStore } from "@/stores/cart-store"
 
-export function ProductCard({ product }: { product: ProductCardData }) {
+export function ProductCard({
+  product,
+  onRemove,
+}: {
+  product: ProductCardData
+  // Wishlist only: shows a trash button beside the cart button
+  onRemove?: () => void
+}) {
   const { t, i18n } = useTranslation()
   const discount =
     product.price != null
-      ? discountPercent({ price: product.price, originalPrice: product.originalPrice })
+      ? discountPercent({
+          price: product.price,
+          originalPrice: product.originalPrice,
+        })
       : 0
   const hasPrice = product.price != null
-  const requireAuth = useRequireAuth()
-  const addToCart = useCartStore((state) => state.addItem)
+  const cart = useCartCounter(
+    {
+      productId: product.id,
+      slug: product.id,
+      productUuid: product.uuid,
+      name: product.name,
+      brand: product.brand,
+      image: product.image,
+      price: product.price ?? 0,
+      originalPrice: product.originalPrice,
+    },
+    product.listingId
+  )
 
   return (
-    <Card size="sm" className="relative h-full gap-0 py-0 transition-shadow hover:shadow-lg">
+    <Card
+      size="sm"
+      className="relative h-full gap-0 py-0 transition-shadow hover:shadow-lg"
+    >
       <div className="relative aspect-4/3 overflow-hidden">
         {product.image ? (
           <img
@@ -69,7 +95,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             {product.brand}
           </span>
         )}
-        <CardTitle className="text-bidi-plain line-clamp-2 text-sm font-semibold">
+        <CardTitle className="line-clamp-2 text-sm font-semibold text-bidi-plain">
           <Link
             to="/products/$productId"
             params={{ productId: product.id }}
@@ -80,12 +106,15 @@ export function ProductCard({ product }: { product: ProductCardData }) {
           </Link>
         </CardTitle>
         {product.description && (
-          <CardDescription className="text-bidi-plain line-clamp-2 text-xs">
+          <CardDescription className="line-clamp-2 text-xs text-bidi-plain">
             {product.description}
           </CardDescription>
         )}
         {product.rating != null && !!product.reviewCount && (
-          <StarRating rating={product.rating} reviewCount={product.reviewCount} />
+          <StarRating
+            rating={product.rating}
+            reviewCount={product.reviewCount}
+          />
         )}
       </CardContent>
 
@@ -96,7 +125,9 @@ export function ProductCard({ product }: { product: ProductCardData }) {
               {formatPrice(product.price, i18n.language)}
             </span>
           ) : (
-            <span className="text-xs text-muted-foreground">{t("landing.product.priceUnavailable")}</span>
+            <span className="text-xs text-muted-foreground">
+              {t("landing.product.priceUnavailable")}
+            </span>
           )}
           {hasPrice && product.originalPrice && (
             <span className="text-xs text-muted-foreground line-through">
@@ -104,30 +135,73 @@ export function ProductCard({ product }: { product: ProductCardData }) {
             </span>
           )}
         </div>
-        {/* Sits above the card-wide link so it stays clickable */}
-        {/* Guests sign in first. TODO: send bestListing.listingId to POST /cart/items once the cart API is wired */}
-        <Button
-          size="icon"
-          // No price means it can't be bought yet
-          disabled={!hasPrice}
-          onClick={() =>
-            requireAuth(() =>
-              addToCart({
-                productId: product.id,
-                slug: product.id,
-                name: product.name,
-                brand: product.brand,
-                image: product.image,
-                price: product.price!,
-                originalPrice: product.originalPrice,
-              })
-            )
-          }
-          className="relative z-10 size-9 shrink-0 rounded-full bg-brand-navy text-white hover:bg-brand-navy/90 dark:bg-white dark:text-brand-navy dark:hover:bg-white/90"
-          aria-label={t("landing.product.addToCart", { name: product.name })}
-        >
-          <ShoppingBag />
-        </Button>
+        {/* The buttons sit above the card-wide link so they stay clickable */}
+        <div className="relative z-10 flex shrink-0 items-center gap-2">
+          {onRemove && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onRemove}
+                aria-label={t("wishlist.removeItem", { name: product.name })}
+                className="size-9 rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+              >
+                <Trash2 />
+              </Button>
+              <span aria-hidden className="h-6 w-px bg-border" />
+            </>
+          )}
+          {/* Not in the cart: the cart icon (guests sign in first). In the cart: a
+              − quantity + counter. Both talk to the cart API (useCartCounter) */}
+          {cart.quantity > 0 ? (
+            <div
+              role="group"
+              aria-label={t("landing.product.inCart", { name: product.name })}
+              className="flex h-9 items-center rounded-full bg-brand-navy text-white dark:bg-white dark:text-brand-navy"
+            >
+              <button
+                type="button"
+                onClick={cart.decrement}
+                disabled={cart.pending}
+                aria-label={t(cart.quantity === 1 ? "landing.product.removeFromCart" : "productPage.decrease")}
+                className="flex size-9 items-center justify-center rounded-full transition-colors hover:bg-white/15 disabled:opacity-60 dark:hover:bg-black/10"
+              >
+                {cart.quantity === 1 ? <Trash2 className="size-3.5" /> : <Minus className="size-3.5" />}
+              </button>
+              <output aria-live="polite" aria-label={t("productPage.quantity")} className="min-w-5 text-center text-sm font-semibold">
+                {cart.pending ? <Loader2 className="mx-auto size-3.5 animate-spin" /> : cart.quantity}
+              </output>
+              <button
+                type="button"
+                onClick={cart.increment}
+                disabled={cart.pending || !cart.canIncrement}
+                aria-label={t("productPage.increase")}
+                className="flex size-9 items-center justify-center rounded-full transition-colors hover:bg-white/15 disabled:opacity-40 dark:hover:bg-black/10"
+              >
+                <Plus className="size-3.5" />
+              </button>
+            </div>
+          ) : (
+            <Button
+              size="icon"
+              // No price or sold out means it can't be bought now
+              disabled={!hasPrice || product.inStock === false || cart.pending}
+              onClick={cart.add}
+              className={cn(
+                "size-9 shrink-0 rounded-full bg-brand-navy text-white hover:bg-brand-navy/90 dark:bg-white dark:text-brand-navy dark:hover:bg-white/90",
+                cart.error && "bg-destructive hover:bg-destructive dark:bg-destructive dark:text-white"
+              )}
+              aria-label={t("landing.product.addToCart", { name: product.name })}
+              // The reason shows on hover; screen readers get it from the live region below
+              title={cart.error ?? undefined}
+            >
+              {cart.pending ? <Loader2 className="animate-spin" /> : cart.error ? <X /> : <ShoppingBag />}
+            </Button>
+          )}
+          <span aria-live="polite" className="sr-only">
+            {cart.error ?? ""}
+          </span>
+        </div>
       </CardFooter>
     </Card>
   )

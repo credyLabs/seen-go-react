@@ -20,17 +20,19 @@ export function Pagination({
   page,
   totalPages,
   onChange,
+  className,
 }: {
   // 1-based
   page: number
   totalPages: number
   onChange: (page: number) => void
+  className?: string
 }) {
   const { t } = useTranslation()
   if (totalPages <= 1) return null
 
   return (
-    <nav aria-label={t("orders.pagination")} className="flex items-center justify-end gap-1.5">
+    <nav aria-label={t("orders.pagination")} className={cn("flex items-center justify-end gap-1.5", className)}>
       <Button
         variant="ghost"
         className={SQUARE}

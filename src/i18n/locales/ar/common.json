@@ -25,7 +25,9 @@
         "deal": "عرض",
         "hot": "رائج"
       },
-      "priceUnavailable": "السعر غير متوفر"
+      "priceUnavailable": "السعر غير متوفر",
+      "inCart": "{{name}} في السلة",
+      "removeFromCart": "إزالة من السلة"
     },
     "trending": {
       "eyebrow": "الأكثر إعجاباً هذا الأسبوع",
@@ -166,8 +168,42 @@
     "errors": {
       "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
       "network": "تعذّر الاتصال بالخادم. تحقق من اتصالك وحاول مرة أخرى.",
-      "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
-    }
+      "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "emailTaken": "يوجد حساب بهذا البريد الإلكتروني بالفعل. جرّب تسجيل الدخول.",
+      "passwordPolicy": "اختر كلمة مرور أقوى: 8 أحرف على الأقل تتضمن أحرفًا كبيرة وصغيرة ورقمًا ورمزًا.",
+      "invalidCode": "الرمز غير صالح أو منتهي الصلاحية. تحقق من البريد وحاول مرة أخرى.",
+      "confirmedSignIn": "تم تأكيد حسابك، لكن تعذّر تسجيل دخولك تلقائيًا. يرجى تسجيل الدخول."
+    },
+    "creatingAccount": "جارٍ إنشاء حسابك…",
+    "confirmTitle": "تحقق من بريدك الإلكتروني",
+    "confirmSubtitle": "أرسلنا رمز التأكيد إلى",
+    "confirmCode": "رمز التأكيد",
+    "confirmButton": "تأكيد وتسجيل الدخول",
+    "confirming": "جارٍ التأكيد…",
+    "useDifferentEmail": "استخدام بريد إلكتروني آخر",
+    "passwordsMatch": "كلمتا المرور متطابقتان",
+    "passwordRuleUnmet": "(غير مستوفى بعد)",
+    "passwordStrength": {
+      "weak": "ضعيفة",
+      "fair": "متوسطة",
+      "strong": "قوية"
+    },
+    "passwordRules": {
+      "length": "8 أحرف",
+      "upper": "كبير",
+      "lower": "صغير",
+      "number": "رقم",
+      "symbol": "رمز"
+    },
+    "passwordRulesFull": {
+      "length": "8 أحرف على الأقل",
+      "upper": "حرف كبير",
+      "lower": "حرف صغير",
+      "number": "رقم",
+      "symbol": "رمز (مثل ! @ # $)"
+    },
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور"
   },
   "header": {
     "phone": "800-SEENGO",
@@ -184,27 +220,6 @@
     "myAccount": "حسابي",
     "orders": "طلباتي",
     "allCategories": "جميع الفئات",
-    "categories": {
-      "smartphones": "الهواتف الذكية",
-      "laptops": "أجهزة اللابتوب",
-      "audio": "الصوتيات",
-      "wearables": "الأجهزة القابلة للارتداء",
-      "tablets": "الأجهزة اللوحية",
-      "gaming": "الألعاب",
-      "smartHome": "المنزل الذكي",
-      "cameras": "الكاميرات",
-      "accessories": "الإكسسوارات",
-      "earbuds": "سماعات الأذن",
-      "monitors": "الشاشات",
-      "consoles": "أجهزة الألعاب",
-      "fitnessTrackers": "أجهزة تتبع اللياقة",
-      "eReaders": "القارئات الإلكترونية",
-      "drones": "الطائرات المسيّرة",
-      "chargers": "الشواحن",
-      "refurbished": "مجددة",
-      "brands": "العلامات التجارية",
-      "deals": "العروض"
-    },
     "megaMenu": {
       "viewAll": "عرض الكل",
       "loading": "جارٍ تحميل الفئات…",
@@ -239,26 +254,6 @@
     "tagline": "Seengo هو السوق الإلكتروني الأول للإلكترونيات الفاخرة في الإمارات.",
     "emailPlaceholder": "احصل على العروض",
     "subscribe": "اشترك",
-    "shop": "تسوّق",
-    "help": "المساعدة",
-    "company": "الشركة",
-    "legal": "قانوني",
-    "allBrands": "جميع العلامات التجارية",
-    "orderTracking": "تتبّع الطلب",
-    "returns": "الإرجاع والاسترداد",
-    "warranty": "الضمان",
-    "shipping": "الشحن",
-    "faq": "الأسئلة الشائعة",
-    "about": "عن Seengo",
-    "careers": "الوظائف",
-    "press": "الصحافة",
-    "sellWithUs": "بِع معنا",
-    "affiliate": "التسويق بالعمولة",
-    "terms": "الشروط",
-    "privacy": "الخصوصية",
-    "cookies": "ملفات تعريف الارتباط",
-    "vatInfo": "معلومات ضريبة القيمة المضافة",
-    "tradeLicense": "الرخصة التجارية",
     "copyright": "© {{year}} Seengo Marketplace · دبي، الإمارات · رخصة تجارية #SG-2026-118",
     "cod": "الدفع عند الاستلام"
   },
@@ -267,7 +262,6 @@
     "addToWishlist": "أضف إلى قائمة الأمنيات",
     "removeFromWishlist": "إزالة من قائمة الأمنيات",
     "save": "وفّر {{percent}}%",
-    "color": "اللون",
     "quantity": "الكمية",
     "decrease": "إنقاص الكمية",
     "increase": "زيادة الكمية",
@@ -308,7 +302,17 @@
     "loading": "جارٍ تحميل المنتج",
     "reviewsError": "تعذّر تحميل المراجعات.",
     "noWrittenReviews": "لا توجد مراجعات مكتوبة بعد.",
-    "verifiedPurchase": "عملية شراء موثقة"
+    "verifiedPurchase": "عملية شراء موثقة",
+    "boughtTogether": {
+      "title": "يُشترى معًا غالبًا",
+      "total_zero": "الإجمالي",
+      "total_one": "سعر منتج واحد",
+      "total_two": "إجمالي منتجين",
+      "total_few": "إجمالي {{count}} منتجات",
+      "total_many": "إجمالي {{count}} منتجًا",
+      "total_other": "إجمالي {{count}} منتج",
+      "addAll": "أضف الكل إلى السلة"
+    }
   },
   "videoPlayer": {
     "label": "فيديو: {{title}}",
@@ -368,7 +372,16 @@
       "bodyNoWishlist": "ستتم إزالة هذا المنتج من سلتك.",
       "moveToWishlist": "نقل إلى قائمة الأمنيات",
       "remove": "إزالة المنتج"
-    }
+    },
+    "errors": {
+      "notSold": "لا يتوفر هذا المنتج لدى أي بائع حاليًا.",
+      "network": "تعذّر الوصول إلى الخادم. تحقق من اتصالك وحاول مرة أخرى.",
+      "add": "تعذّرت إضافة هذا إلى سلتك. يرجى المحاولة مرة أخرى.",
+      "update": "تعذّر تحديث الكمية. يرجى المحاولة مرة أخرى.",
+      "remove": "تعذّرت إزالة هذا المنتج. يرجى المحاولة مرة أخرى."
+    },
+    "loadError": "تعذّر تحميل سلتك",
+    "loading": "جارٍ تحميل سلتك"
   },
   "orders": {
     "title": "طلباتي",
@@ -417,11 +430,13 @@
     "writeReview": "اكتب مراجعة",
     "pagination": "ترقيم الصفحات",
     "previousPage": "الصفحة السابقة",
-    "nextPage": "الصفحة التالية"
+    "nextPage": "الصفحة التالية",
+    "deliverTo": "التوصيل إلى {{name}}:",
+    "addressesTitle": "عناوين التوصيل",
+    "addressesHint": "تُستخدم عند إتمام الشراء. اجعل الأكثر استخدامًا افتراضيًا."
   },
   "wishlist": {
     "title": "قائمة أمنياتي",
-    "remove": "إزالة",
     "emptyTitle": "قائمة أمنياتك فارغة",
     "emptyBody": "اضغط على القلب في أي منتج لحفظه هنا لوقت لاحق.",
     "itemCount_zero": "لا توجد منتجات",
@@ -429,7 +444,18 @@
     "itemCount_two": "منتجان",
     "itemCount_few": "{{count}} منتجات",
     "itemCount_many": "{{count}} منتجًا",
-    "itemCount_other": "{{count}} منتج"
+    "itemCount_other": "{{count}} منتج",
+    "removeItem": "إزالة {{name}} من قائمة الأمنيات",
+    "unavailable": "هذا المنتج لم يعد متوفرًا.",
+    "removeUnavailable": "إزالة",
+    "loadError": "تعذّر تحميل قائمة أمنياتك",
+    "loading": "جارٍ تحميل قائمة أمنياتك",
+    "removeDialog": {
+      "title": "إزالة من قائمة الأمنيات؟",
+      "body": "يمكنك حفظه مرة أخرى في أي وقت من صفحة المنتج.",
+      "confirm": "إزالة",
+      "error": "تعذّرت إزالة هذا المنتج. يرجى المحاولة مرة أخرى."
+    }
   },
   "profile": {
     "title": "إعدادات الملف الشخصي",

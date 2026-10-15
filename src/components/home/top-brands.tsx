@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -6,6 +7,8 @@ import { CarouselItem } from "@/components/ui/carousel"
 
 export interface BrandTile {
   id: string
+  // Brand UUID for the listing filter
+  brandId: string | null
   name: string
   logoUrl: string | null
 }
@@ -46,15 +49,15 @@ export function TopBrands({
     >
       {brands.map((brand) => (
         <CarouselItem key={brand.id} className="basis-auto ps-3">
-          {/* TODO: link to the brand listing once the search page exists */}
-          <a
-            href="#"
+          <Link
+            to="/search"
+            search={{ brandIds: brand.brandId ?? undefined }}
             draggable={false}
             className="flex h-full min-h-20 w-32 flex-col items-center justify-center gap-2 rounded-2xl border bg-card px-3 py-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
           >
             {brand.logoUrl && <BrandLogo src={brand.logoUrl} />}
             <span className="line-clamp-1 text-base font-bold tracking-tight">{brand.name}</span>
-          </a>
+          </Link>
         </CarouselItem>
       ))}
     </ScrollRail>

@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useAuth } from "@/lib/auth"
@@ -177,7 +178,7 @@ function ProfileForm({
   preferences: Preferences
 }) {
   const { t } = useTranslation()
-  const { token, user, login } = useAuth()
+  const { token, user, updateUser } = useAuth()
   const queryClient = useQueryClient()
 
   const initial = {
@@ -219,7 +220,8 @@ function ProfileForm({
     },
     onSuccess: async () => {
       // Keep the header's name in step with the profile
-      login(token!, {
+      updateUser({
+        ...user,
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         email: profile.email,
@@ -508,9 +510,8 @@ function PasswordSection() {
           label={t("profile.currentPassword")}
           error={showErrors ? errors.current : null}
         >
-          <Input
+          <PasswordInput
             id="currentPassword"
-            type="password"
             autoComplete="current-password"
             value={fields.current}
             onChange={(event) => set("current")(event.target.value)}
@@ -522,9 +523,8 @@ function PasswordSection() {
           label={t("profile.newPassword")}
           error={showErrors ? errors.next : null}
         >
-          <Input
+          <PasswordInput
             id="newPassword"
-            type="password"
             autoComplete="new-password"
             placeholder={t("profile.newPasswordPlaceholder", {
               count: MIN_PASSWORD_LENGTH,
@@ -539,9 +539,8 @@ function PasswordSection() {
           label={t("profile.confirmPassword")}
           error={showErrors ? errors.confirm : null}
         >
-          <Input
+          <PasswordInput
             id="confirmPassword"
-            type="password"
             autoComplete="new-password"
             placeholder={t("profile.confirmPasswordPlaceholder")}
             value={fields.confirm}

@@ -1,13 +1,6 @@
-import {
-  BadgeCheck,
-  CreditCard,
-  RotateCcw,
-  ShieldCheck,
-  Truck,
-  type LucideIcon,
-} from "lucide-react"
 import { useTranslation } from "react-i18next"
 
+import { iconFor } from "@/components/home/benefit-icon"
 import { cn } from "@/lib/utils"
 
 export interface Highlight {
@@ -18,27 +11,6 @@ export interface Highlight {
   iconKey?: string | null
   // Used to pick an icon when iconKey is missing, e.g. "/pages/warranty"
   linkUrl?: string | null
-}
-
-const ICONS: Record<string, LucideIcon> = {
-  "shield-check": ShieldCheck,
-  truck: Truck,
-  "credit-card": CreditCard,
-  "rotate-ccw": RotateCcw,
-}
-
-// Newer responses send no iconKey, so match the benefit's page instead
-const ICON_BY_LINK: [RegExp, LucideIcon][] = [
-  [/warranty/, ShieldCheck],
-  [/shipping|delivery/, Truck],
-  [/payment|installment/, CreditCard],
-  [/return/, RotateCcw],
-]
-
-function iconFor(highlight: Highlight): LucideIcon {
-  if (highlight.iconKey && ICONS[highlight.iconKey]) return ICONS[highlight.iconKey]
-  const link = highlight.linkUrl ?? ""
-  return ICON_BY_LINK.find(([pattern]) => pattern.test(link))?.[1] ?? BadgeCheck
 }
 
 // Translated copy for pages that don't load the benefits from the API

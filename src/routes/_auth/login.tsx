@@ -1,10 +1,11 @@
-import { signIn } from "@/api/auth"
+import { signIn, tokensFromSignIn, userFromSignIn } from "@/api/auth"
 import { ApiError } from "@/api/http"
 import { useCompleteAuth } from "@/components/auth/use-complete-auth"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
 import { useMutation } from "@tanstack/react-query"
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { Loader2 } from "lucide-react"
@@ -22,12 +23,9 @@ function LoginPage() {
 
   const signInMutation = useMutation({
     mutationFn: signIn,
-    onSuccess: ({ accessToken, user }) => {
-      // name may be empty; fall back to the email's local part for the greeting
-      const [firstName = "", ...rest] = (user.name.trim() || user.email.split("@")[0]).split(/\s+/)
-      // TODO: keep refreshToken/expiresIn and renew via POST /auth/refresh once token storage is decided
-      completeAuth(accessToken, { firstName, lastName: rest.join(" "), email: user.email })
-    },
+    // Name and email come from the response's idToken; the session lasts until expiresIn.
+    // TODO: renew with POST /auth/refresh using the stored refreshToken
+    onSuccess: (response) => completeAuth(response.accessToken, userFromSignIn(response), tokensFromSignIn(response)),
   })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -92,10 +90,9 @@ function LoginPage() {
                 {t("auth.forgotPassword")}
               </a>
             </div>
-            <Input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               autoComplete="current-password"
               required
               placeholder={t("auth.passwordPlaceholder")}

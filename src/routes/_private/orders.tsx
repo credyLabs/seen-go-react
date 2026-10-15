@@ -4,6 +4,7 @@ import { PackageOpen, RotateCw, Search } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 import { orderDetailQueryOptions, orderStage, ordersQueryOptions, type OrderStage } from "@/api/orders"
+import { AddressBook } from "@/components/addresses/address-book"
 import { OrderCard } from "@/components/orders/order-card"
 import { Pagination } from "@/components/orders/pagination"
 import {
@@ -160,6 +161,17 @@ function OrdersPage() {
           setSearch({ page: next > 1 ? next : undefined })
           window.scrollTo({ top: 0 })
         }}
+      />
+
+      {/* Saved addresses for the next orders: add / edit / delete / set default */}
+      <AddressBook
+        className="mt-6 border-t pt-8"
+        header={
+          <div className="flex flex-col gap-0.5">
+            <h2 className="text-xl font-bold tracking-tight text-primary dark:text-foreground">{t("orders.addressesTitle")}</h2>
+            <p className="text-xs text-muted-foreground">{t("orders.addressesHint")}</p>
+          </div>
+        }
       />
     </div>
   )

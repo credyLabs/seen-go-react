@@ -1,5 +1,3 @@
-import { queryOptions } from "@tanstack/react-query"
-
 import { endpoints } from "@/api/endpoints"
 import { request } from "@/api/http"
 import type { ProductBadge } from "@/api/products"
@@ -17,7 +15,8 @@ export type HomeSectionType =
   | "FOOTER_BENEFIT"
   | "FOOTER_LINK_GROUP"
 
-export type HomeItemType = "PRODUCT" | "CATEGORY" | "BRAND" | "BENEFIT" | "FOOTER_LINK"
+// BANNER: a ready-made hero image linking to a product
+export type HomeItemType = "PRODUCT" | "CATEGORY" | "BRAND" | "BENEFIT" | "FOOTER_LINK" | "BANNER"
 
 export interface HomeItem {
   id: string
@@ -34,7 +33,14 @@ export interface HomeItem {
   // Frontend icon name for benefits, e.g. "shield-check"
   iconKey?: string | null
 
-  // PRODUCT items also carry card data
+  // BANNER items: hero slide copy and styling
+  subtitle?: string | null
+  ctaLabel?: string | null
+  // e.g. "#0D1B2A"
+  bgColor?: string | null
+  productImageUrl?: string | null
+
+  // PRODUCT (and BANNER) items also carry card data
   name?: string
   slug?: string
   shortDescription?: string | null
@@ -76,13 +82,6 @@ export interface HomeResponse {
 export function fetchHome() {
   return request<HomeResponse>(endpoints.catalogue.home)
 }
-
-export const homeQueryOptions = (lang: string) =>
-  queryOptions({
-    queryKey: ["catalogue", "home", lang],
-    // lang is in the key so switching language refetches; send it once the API localizes content
-    queryFn: fetchHome,
-  })
 
 const bySortOrder = (a: { sortOrder: number }, b: { sortOrder: number }) =>
   a.sortOrder - b.sortOrder

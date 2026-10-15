@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { Link, useNavigate } from "@tanstack/react-router"
-import { Loader2, Package, Star } from "lucide-react"
+import { Loader2, MapPin, Package, Star } from "lucide-react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -32,6 +32,8 @@ function Meta({ label, value }: { label: string; value: string }) {
 }
 
 export function OrderCard({ order, detail }: { order: OrderSummary; detail?: OrderDetail }) {
+  // Copied onto the order when it was placed (GET /orders/{orderId})
+  const shipping = detail?.addresses?.find((a) => a.addressType === "SHIPPING") ?? detail?.addresses?.[0]
   const { t, i18n } = useTranslation()
   const lang = i18n.language
   const navigate = useNavigate()
@@ -117,6 +119,18 @@ export function OrderCard({ order, detail }: { order: OrderSummary; detail?: Ord
           <p className="text-base font-bold">{formatPrice(order.grandTotal, lang)}</p>
         </div>
       </div>
+
+      {shipping && (
+        <div className="flex items-start gap-2 border-t px-5 py-3 text-xs">
+          <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
+          <p className="text-bidi-plain text-muted-foreground rtl:text-right">
+            <span className="font-medium text-foreground">{t("orders.deliverTo", { name: shipping.fullName })}</span>{" "}
+            {[shipping.street1, shipping.street2, shipping.city, shipping.state !== shipping.city ? shipping.state : null, shipping.country]
+              .filter(Boolean)
+              .join(", ")}
+          </p>
+        </div>
+      )}
 
       <footer className="flex flex-wrap items-center gap-3 border-t px-5 py-3">
         <p className="text-xs text-muted-foreground">

@@ -11,8 +11,11 @@ import {
   relatedProductsQueryOptions,
 } from "@/api/product-page"
 import type { ProductDetail } from "@/api/products"
+import { BrandLoader } from "@/components/brand/brand-status"
 import { ProductRail } from "@/components/home/product-rail"
+import { iconFor } from "@/components/home/benefit-icon"
 import { ServiceHighlights } from "@/components/home/service-highlights"
+import { FrequentlyBoughtTogether } from "@/components/product/frequently-bought-together"
 import { ProductGallery } from "@/components/product/product-gallery"
 import { ProductInfoTabs } from "@/components/product/product-info-tabs"
 import { ProductPurchase } from "@/components/product/product-purchase"
@@ -106,7 +109,7 @@ function ProductContent({ product }: { product: ProductDetail }) {
                   {[product.brand, product.categoryName].filter(Boolean).join(" · ")}
                 </span>
               )}
-              <h1 className="text-bidi-plain text-3xl font-bold tracking-tight lg:text-4xl">
+              <h1 className="text-bidi-plain text-3xl font-bold tracking-tight rtl:text-right lg:text-4xl">
                 {product.name}
               </h1>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
@@ -140,11 +143,37 @@ function ProductContent({ product }: { product: ProductDetail }) {
             </div>
 
             <ProductPurchase product={product} />
+
+            {/* Service cards from GET /catalogue/footer-benefits, 2x2 as in the design */}
+            {benefits.data && benefits.data.length > 0 && (
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {benefits.data.map((benefit) => {
+                  const Icon = iconFor({ iconKey: benefit.icon, linkUrl: benefit.linkUrl })
+                  return (
+                    <li key={benefit.id} className="flex items-start gap-3 rounded-xl border bg-card p-3.5">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-brand-navy dark:text-foreground">
+                        <Icon className="size-4" />
+                      </span>
+                      <span className="flex flex-col gap-0.5">
+                        <span className="text-bidi-plain text-sm font-semibold rtl:text-right">{benefit.title}</span>
+                        {benefit.description && (
+                          <span className="text-bidi-plain text-xs text-muted-foreground rtl:text-right">
+                            {benefit.description}
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </div>
         </div>
       </div>
 
       <ProductInfoTabs product={product} />
+
+      <FrequentlyBoughtTogether product={product} />
 
       {/* No "see all" links: there are no listing pages to send them to yet */}
       <ProductRail title={t("productPage.similar")} products={related.data?.similar ?? []} />
@@ -171,19 +200,7 @@ function ProductContent({ product }: { product: ProductDetail }) {
 
 function ProductPending() {
   const { t } = useTranslation()
-  return (
-    <div role="status" aria-label={t("productPage.loading")} className="flex animate-pulse flex-col gap-6">
-      <div className="h-4 w-64 rounded bg-muted" />
-      <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
-        <div className="aspect-square rounded-2xl bg-muted" />
-        <div className="flex flex-col gap-4">
-          <div className="h-4 w-40 rounded bg-muted" />
-          <div className="h-10 w-3/4 rounded bg-muted" />
-          <div className="h-56 rounded-2xl bg-muted" />
-        </div>
-      </div>
-    </div>
-  )
+  return <BrandLoader label={t("productPage.loading")} className="min-h-[60svh]" />
 }
 
 function ProductNotFound() {

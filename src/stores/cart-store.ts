@@ -11,6 +11,16 @@ export interface CartLine {
   productId: string
   // Product page to link to; missing when unknown (e.g. re-added from an order)
   slug?: string
+  // Product UUID, needed to move the line to the wishlist
+  productUuid?: string
+  // Seller listing it was added with; matches the line to GET /cart's items
+  listingId?: string
+  // Server cart line id (lines built from GET /cart), for PATCH/DELETE /cart/items/{itemId}
+  itemId?: string
+  // From GET /cart: false when sold out or no longer sold; undefined when unknown
+  inStock?: boolean
+  // Largest quantity allowed (purchase limit / stock), from GET /cart
+  maxQuantity?: number
   name: string
   brand?: string
   image: string | null
@@ -30,6 +40,8 @@ interface CartState {
   addItem: (item: NewCartLine, quantity?: number) => void
   setQuantity: (lineId: string, quantity: number) => void
   removeItem: (lineId: string) => void
+  // Drops this browser's copy of a line removed from the server cart
+  removeListing: (listingId: string) => void
   clear: () => void
 }
 
@@ -66,6 +78,8 @@ export const useCartStore = create<CartState>()(
         })),
       removeItem: (lineId) =>
         set((state) => ({ lines: state.lines.filter((line) => line.lineId !== lineId) })),
+      removeListing: (listingId) =>
+        set((state) => ({ lines: state.lines.filter((line) => line.listingId !== listingId) })),
       clear: () => set({ lines: [] }),
     }),
     { name: "seengo-cart" }

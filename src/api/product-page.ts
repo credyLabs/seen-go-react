@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query"
 
+import { fetchCachedCategoryTree, flattenCategories } from "@/api/categories"
 import { endpoints, withQuery } from "@/api/endpoints"
 import { itemBadge, itemPrice, type HomeItem } from "@/api/home"
 import { ApiError, request } from "@/api/http"
@@ -20,9 +21,13 @@ interface ApiMedia {
 interface ApiVariant {
   variantId: string
   name: string
+  option1Name: string | null
+  option1Value: string | null
+  option2Name: string | null
+  option2Value: string | null
   lowestPrice: number | null
   sellerCount: number
-  sellers: { available: number }[]
+  sellers: { available: number; listingId?: string; price?: number | null }[]
 }
 
 interface ApiProductDetail {
@@ -46,23 +51,42 @@ interface ApiProductDetail {
   quantityLimits?: { minimum: number; maximum: number }
   originalPrice?: number | null
   discountAmount?: number | null
+  discountPercent?: number | null
   averageRating?: number | null
   reviewCount?: number | null
   badgeTag?: string | null
 }
 
 // Product-card shape returned by /similar, /recommendations, /customers-also-viewed
-interface ApiProductCard {
-  product: { id: string; slug: string; name: string; brandId?: string | null; shortDescription?: string | null }
+// and /catalogue/products/search
+export interface ApiProductCard {
+  product: {
+    id: string
+    slug: string
+    name: string
+    brandId?: string | null
+    description?: string | null
+    shortDescription?: string | null
+  }
   primaryImageUrl: string | null
+  media?: { cdnUrl: string; mediaType: string }[]
   shortDescription?: string | null
   originalPrice?: number | null
   discountAmount?: number | null
   averageRating?: number | null
   reviewCount?: number | null
   badgeTag?: string | null
-  priceSummary?: { lowestPrice: number | null }
-  bestListing?: { listingId: string; price: number } | null
+  // Approved-review summary (search results)
+  ratingSummary?: { averageRating: number | null; reviewCount: number | null }
+  priceSummary?: {
+    lowestPrice: number | null
+    highestPrice?: number | null
+    // Search results repeat the list price and advertised discount here
+    originalPrice?: number | null
+    discountAmount?: number | null
+  }
+  // Lowest-priced in-stock offer; null when nobody has stock
+  bestListing?: { listingId: string; price: number; compareAtPrice?: number | null; inStock?: boolean } | null
 }
 
 interface NamedItem {
@@ -104,23 +128,30 @@ function asHomeItem(fields: Partial<HomeItem>): HomeItem {
   return { id: "", itemType: "PRODUCT", referenceId: null, label: null, imageUrl: null, linkUrl: null, sortOrder: 0, ...fields }
 }
 
-function cardFromApi(card: ApiProductCard, brands: Map<string, string>): ProductCardData {
+export function cardFromApi(card: ApiProductCard, brands: Map<string, string>): ProductCardData {
   const { price, originalPrice } = itemPrice(
     asHomeItem({
       offerPrice: card.bestListing?.price ?? card.priceSummary?.lowestPrice ?? null,
-      originalPrice: card.originalPrice,
-      discountAmount: card.discountAmount,
+      // A seller's own "was" price goes with its price; otherwise the product's list price
+      originalPrice: card.bestListing
+        ? (card.bestListing.compareAtPrice ?? card.originalPrice ?? card.priceSummary?.originalPrice)
+        : (card.originalPrice ?? card.priceSummary?.originalPrice),
+      discountAmount: card.discountAmount ?? card.priceSummary?.discountAmount,
     })
   )
+  // Search results carry the counts in ratingSummary; the other lists at the top level
+  const reviewCount = card.reviewCount ?? card.ratingSummary?.reviewCount ?? undefined
   return {
     id: card.product.slug,
+    uuid: card.product.id,
+    listingId: card.bestListing?.listingId,
     name: card.product.name,
-    image: card.primaryImageUrl,
+    image: card.primaryImageUrl ?? card.media?.find((m) => m.mediaType !== "VIDEO")?.cdnUrl ?? null,
     brand: card.product.brandId ? brands.get(card.product.brandId) : undefined,
     description: card.shortDescription ?? card.product.shortDescription ?? undefined,
     badge: itemBadge(asHomeItem({ badgeTag: card.badgeTag })),
-    rating: card.averageRating ?? undefined,
-    reviewCount: card.reviewCount ?? undefined,
+    rating: card.averageRating ?? card.ratingSummary?.averageRating ?? undefined,
+    reviewCount,
     price,
     originalPrice,
   }
@@ -143,15 +174,34 @@ function toProductDetail(
   )
   const media = [...data.media].sort((a, b) => a.sortOrder - b.sortOrder)
   const images = media.filter((m) => m.mediaType !== "VIDEO")
-  const gallery: ProductMedia[] = media.map((m) =>
-    m.mediaType === "VIDEO"
-      ? { type: "video", src: m.cdnUrl, poster: images[0]?.cdnUrl ?? "" }
-      : { type: "image", src: m.cdnUrl }
-  )
+  const gallery: ProductMedia[] = media.map((m) => {
+    const alt = m.altText ?? undefined
+    return m.mediaType === "VIDEO"
+      ? { type: "video", src: m.cdnUrl, poster: images[0]?.cdnUrl ?? "", alt }
+      : { type: "image", src: m.cdnUrl, alt }
+  })
 
   // Stock is only known once sellers list the product
-  const sellers = data.variants.flatMap((variant) => variant.sellers ?? [])
-  const inStock = sellers.length ? sellers.some((seller) => seller.available > 0) : undefined
+  const stockOf = (sellers: { available: number }[] = []) =>
+    sellers.length ? sellers.some((seller) => seller.available > 0) : undefined
+  const inStock = stockOf(data.variants.flatMap((variant) => variant.sellers ?? []))
+
+  const specs = data.specifications.map((spec) => ({ label: specLabel(spec.name), value: specValue(spec.value) }))
+
+  const variants = data.variants.map((variant) => ({
+    id: variant.variantId,
+    name: variant.name,
+    options: [
+      [variant.option1Name, variant.option1Value],
+      [variant.option2Name, variant.option2Value],
+    ].flatMap(([name, value]) => (name && value ? [{ name, value }] : [])),
+    price: variant.lowestPrice,
+    inStock: stockOf(variant.sellers),
+    // Cheapest seller with stock
+    listingId: [...(variant.sellers ?? [])]
+      .filter((seller) => seller.available > 0 && seller.listingId)
+      .sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity))[0]?.listingId,
+  }))
 
   return {
     id: product.slug,
@@ -167,29 +217,28 @@ function toProductDetail(
     price: price ?? 0,
     originalPrice,
     gallery,
-    // The API's variants carry no colour swatches yet
-    colors: [],
+    variants,
+    discountPercent: data.discountPercent ?? undefined,
     overview: product.description ?? product.shortDescription ?? "",
-    // No highlights field in the API
-    highlights: [],
-    specs: data.specifications.map((spec) => ({ label: specLabel(spec.name), value: specValue(spec.value) })),
+    // The overview's checklist: the API has no highlights field, so the key specifications
+    highlights: specs.map((spec) => `${spec.label}: ${spec.value}`),
+    specs,
     inStock,
+    minQuantity: data.quantityLimits?.minimum,
     maxQuantity: data.quantityLimits?.maximum,
   }
 }
 
-// Brand and category names for the ids on products (categories are nested one
-// level). Plain objects so React Query can cache them; fetched once per session.
+// Brand and category names for the ids on products. Plain objects so React
+// Query can cache them; fetched once per session. The category tree is the
+// same cached request the header mega menu uses.
 async function fetchNames() {
-  const [brands, roots] = await Promise.all([
+  const [brands, categories] = await Promise.all([
     request<NamedItem[]>(endpoints.catalogue.brands).catch(() => []),
-    request<NamedItem[]>(endpoints.catalogue.categories).catch(() => []),
+    fetchCachedCategoryTree().then(flattenCategories).catch(() => []),
   ])
-  const children = await Promise.all(
-    roots.map((root) => request<NamedItem[]>(endpoints.catalogue.categoryChildren(root.id)).catch(() => []))
-  )
   const toRecord = (items: NamedItem[]) => Object.fromEntries(items.map((item) => [item.id, item.name]))
-  return { brands: toRecord(brands), categories: toRecord([...roots, ...children.flat()]) }
+  return { brands: toRecord(brands), categories: toRecord(categories) }
 }
 
 const namesQueryOptions = queryOptions({
@@ -198,7 +247,7 @@ const namesQueryOptions = queryOptions({
   staleTime: Infinity,
 })
 
-const fetchCachedNames = () => queryClient.fetchQuery(namesQueryOptions)
+export const fetchCachedNames = () => queryClient.fetchQuery(namesQueryOptions)
 
 async function fetchCards(url: string, headers?: Record<string, string>) {
   const data = await request<{ items: ApiProductCard[] }>(withQuery(url, { limit: RELATED_LIMIT }), { headers }).catch(
@@ -267,6 +316,30 @@ export const relatedProductsQueryOptions = (uuid: string, slug: string, lang: st
   queryOptions({
     queryKey: ["products", slug, lang, "related"],
     queryFn: () => fetchRelatedProducts(uuid, slug),
+  })
+
+// GET /orders/products/{id}/frequently-bought-together (order service). Its items
+// carry no price, so each one's product page data is loaded (and cached) for it.
+interface ApiBoughtTogether {
+  items: { variantId: string; purchaseCount: number; product: { id: string; slug: string; name: string } }[]
+  source: string
+}
+
+async function fetchBoughtTogether(uuid: string, lang: string): Promise<ProductDetail[]> {
+  const data = await request<ApiBoughtTogether>(endpoints.products.frequentlyBoughtTogether(uuid))
+  const products = await Promise.all(
+    data.items.map((item) =>
+      queryClient.fetchQuery(productPageQueryOptions(item.product.slug, lang)).catch(() => null)
+    )
+  )
+  return products.filter((product): product is ProductDetail => product != null)
+}
+
+export const frequentlyBoughtTogetherQueryOptions = (uuid: string, lang: string) =>
+  queryOptions({
+    queryKey: ["products", uuid, lang, "bought-together"],
+    // The order service may be down or have no history yet; the section is then hidden
+    queryFn: () => fetchBoughtTogether(uuid, lang).catch(() => []),
   })
 
 // GET /catalogue/products/{id}/reviews

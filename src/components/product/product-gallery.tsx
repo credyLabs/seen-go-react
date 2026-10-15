@@ -6,6 +6,7 @@ import type { ProductDetail } from "@/api/products"
 import { BADGE_CLASS } from "@/components/product/product-badge"
 import { VideoPlayer } from "@/components/video-player"
 import { useRequireAuth } from "@/hooks/use-require-auth"
+import { useAuth } from "@/lib/auth"
 import { cn } from "@/lib/utils"
 import { useIsWishlisted, useWishlistStore } from "@/stores/wishlist-store"
 
@@ -15,8 +16,9 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
   const [active, setActive] = useState(0)
   // Only autoplay a video the user picked, not one that happens to be first
   const [userPicked, setUserPicked] = useState(false)
-  const wishlisted = useIsWishlisted(product.id)
+  const wishlisted = useIsWishlisted(product.uuid)
   const toggleWishlist = useWishlistStore((state) => state.toggle)
+  const { token } = useAuth()
   const requireAuth = useRequireAuth()
   const current = media[active]
 
@@ -75,7 +77,7 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
             className="size-full"
           />
         ) : (
-          <img src={current.src} alt={name} className="size-full object-cover" />
+          <img src={current.src} alt={current.alt ?? name} className="absolute inset-0 size-full object-cover" />
         )}
         {badge && (
           <span
@@ -94,8 +96,9 @@ export function ProductGallery({ product }: { product: ProductDetail }) {
           onClick={() =>
             requireAuth(() =>
               // Only what the wishlist card needs, not the whole product page data
-              toggleWishlist({
+              void toggleWishlist(token!, {
                 id: product.id,
+                productId: product.uuid,
                 name: product.name,
                 image: product.image,
                 brand: product.brand,

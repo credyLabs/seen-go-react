@@ -16,37 +16,49 @@ import { cn } from "@/lib/utils"
 
 const AUTOPLAY_DELAY_MS = 5000
 
+// One BANNER item from GET /catalogue/home, laid out like the banner design
+// (badge, name, tagline, "Starting from" price, product photo panel) and
+// filled from the item's own fields
 export interface HeroSlide {
   id: string
-  // Small pill above the title, e.g. the campaign name
+  // The API's badgeTag, e.g. "HOT"
   eyebrow?: string | null
   title: string
   tagline?: string | null
-  image: string | null
   price?: number | null
+  // Slide background, e.g. "#0D1B2A"
+  bgColor?: string | null
+  image: string | null
   // Product the slide opens, if any
   productSlug?: string | null
 }
 
-// Gold tagline from the banner design
-const TAGLINE_CLASS = "text-[#e2a72e]"
+// Accent for the badge and tagline, as in the design. Kept out of cn(), which
+// would drop text-bidi-plain as a clashing text-* class.
+const ACCENT = "#e2a72e"
 
 function HeroSlideContent({ slide, eager }: { slide: HeroSlide; eager: boolean }) {
   const { t, i18n } = useTranslation()
 
   const content = (
     <>
-      <div className="flex flex-1 flex-col justify-center gap-1.5 p-5 sm:gap-2.5 sm:ps-[5%] sm:pe-6">
+      <div className="flex flex-1 flex-col justify-center gap-2 p-5 sm:gap-3 sm:ps-[4.2%] sm:pe-6">
         {slide.eyebrow && (
-          <span className="text-bidi-plain mb-1 w-fit rounded-full bg-white px-3 py-1 text-[10px] font-semibold tracking-widest text-brand-navy uppercase sm:text-[11px]">
+          <span
+            className="text-bidi-plain w-fit rounded-full px-3.5 py-1 text-[10px] font-semibold tracking-widest text-black/80 uppercase sm:text-[11px]"
+            style={{ backgroundColor: ACCENT }}
+          >
             {slide.eyebrow}
           </span>
         )}
-        <h2 className="text-bidi-plain line-clamp-2 text-xl font-semibold tracking-tight rtl:text-right sm:text-3xl">
+        <h2 className="text-bidi-plain line-clamp-2 text-xl font-semibold tracking-tight rtl:text-right sm:text-[1.875rem] sm:leading-tight">
           {slide.title}
         </h2>
         {slide.tagline && (
-          <p className={cn("text-bidi-plain line-clamp-2 text-sm font-semibold rtl:text-right sm:text-lg", TAGLINE_CLASS)}>
+          <p
+            className="text-bidi-plain line-clamp-2 text-sm font-semibold rtl:text-right sm:text-xl"
+            style={{ color: ACCENT }}
+          >
             {slide.tagline}
           </p>
         )}
@@ -65,7 +77,7 @@ function HeroSlideContent({ slide, eager }: { slide: HeroSlide; eager: boolean }
         {slide.image && (
           <img
             src={slide.image}
-            alt={slide.title}
+            alt=""
             draggable={false}
             loading={eager ? "eager" : "lazy"}
             className="absolute inset-0 size-full object-cover select-none"
@@ -77,19 +89,24 @@ function HeroSlideContent({ slide, eager }: { slide: HeroSlide; eager: boolean }
 
   const className =
     "flex min-h-48 overflow-hidden rounded-2xl bg-brand-navy text-white sm:aspect-1156/346 sm:min-h-0"
+  // The API's colour wins over the navy default
+  const style = slide.bgColor ? { backgroundColor: slide.bgColor } : undefined
 
-  // The whole banner opens the product it features
   return slide.productSlug ? (
     <Link
       to="/products/$productId"
       params={{ productId: slide.productSlug }}
       draggable={false}
+      aria-label={slide.title}
       className={className}
+      style={style}
     >
       {content}
     </Link>
   ) : (
-    <div className={className}>{content}</div>
+    <div className={className} style={style}>
+      {content}
+    </div>
   )
 }
 

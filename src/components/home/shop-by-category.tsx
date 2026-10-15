@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
 import { ScrollRail } from "@/components/home/scroll-rail"
@@ -5,6 +6,8 @@ import { CarouselItem } from "@/components/ui/carousel"
 
 export interface CategoryTile {
   id: string
+  // Category UUID for the listing filter; tiles without one aren't links
+  categoryId: string | null
   label: string
   image: string | null
 }
@@ -29,9 +32,9 @@ export function ShopByCategory({
     >
       {categories.map((category) => (
         <CarouselItem key={category.id} className="basis-auto ps-3">
-          {/* TODO: link to the category listing once the search page exists */}
-          <a
-            href="#"
+          <Link
+            to="/search"
+            search={{ categoryIds: category.categoryId ?? undefined }}
             draggable={false}
             className="flex w-28 flex-col items-center gap-2.5 rounded-2xl border bg-card px-3 py-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
           >
@@ -50,7 +53,7 @@ export function ShopByCategory({
             <span className="text-bidi-plain line-clamp-1 text-xs font-medium">
               {category.label}
             </span>
-          </a>
+          </Link>
         </CarouselItem>
       ))}
     </ScrollRail>

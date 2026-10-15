@@ -5,7 +5,8 @@
 
 // auth: sign-in plus the account APIs (/auth/me, /auth/profile, picture)
 // notifications: notification preferences
-export type MockableApi = "auth" | "notifications"
+// wishlist: the wishlist stays in the browser (no /wishlist calls)
+export type MockableApi = "auth" | "notifications" | "wishlist"
 
 const mocked = new Set(
   (import.meta.env.VITE_MOCK_APIS ?? "")

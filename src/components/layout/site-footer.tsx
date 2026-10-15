@@ -4,9 +4,11 @@ import {
   SiX,
   SiYoutube,
 } from "@icons-pack/react-simple-icons"
+import { useQuery } from "@tanstack/react-query"
 import { Mail } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
+import { footerQueryOptions } from "@/api/footer"
 import { SiteLogo } from "@/components/layout/site-logo"
 import { buttonVariants } from "@/components/ui/button"
 import {
@@ -24,53 +26,13 @@ const SOCIAL_LINKS = [
   { label: "YouTube", Icon: SiYoutube },
 ]
 
-const LINK_COLUMNS = [
-  {
-    title: "footer.shop",
-    links: [
-      "header.categories.smartphones",
-      "header.categories.laptops",
-      "header.categories.audio",
-      "header.categories.gaming",
-      "footer.allBrands",
-    ],
-  },
-  {
-    title: "footer.help",
-    links: [
-      "footer.orderTracking",
-      "footer.returns",
-      "footer.warranty",
-      "footer.shipping",
-      "footer.faq",
-    ],
-  },
-  {
-    title: "footer.company",
-    links: [
-      "footer.about",
-      "footer.careers",
-      "footer.press",
-      "footer.sellWithUs",
-      "footer.affiliate",
-    ],
-  },
-  {
-    title: "footer.legal",
-    links: [
-      "footer.terms",
-      "footer.privacy",
-      "footer.cookies",
-      "footer.vatInfo",
-      "footer.tradeLicense",
-    ],
-  },
-] as const
-
 const PAYMENT_METHODS = ["Visa", "Mastercard", "Apple Pay", "Tabby", "Tamara"]
 
 export function SiteFooter() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.resolvedLanguage ?? i18n.language
+  // Link columns (Shop, Help, Company, Legal) from GET /catalogue/footer; none while loading or on error
+  const { data: groups = [] } = useQuery(footerQueryOptions(lang))
 
   return (
     <footer className="bg-brand-navy text-white/70">
@@ -129,17 +91,17 @@ export function SiteFooter() {
           </ul>
         </div>
 
-        {LINK_COLUMNS.map((column) => (
-          <div key={column.title} className="flex flex-col gap-4">
-            <h2 className="text-xs font-semibold tracking-wider text-brand-copper uppercase">
-              {t(column.title)}
+        {groups.map((group) => (
+          <div key={group.id} className="flex flex-col gap-4">
+            <h2 className="text-bidi-plain text-xs font-semibold tracking-wider text-brand-copper uppercase rtl:text-right">
+              {group.title}
             </h2>
             <ul className="flex flex-col gap-2.5 text-sm">
-              {column.links.map((link) => (
-                <li key={link}>
-                  {/* TODO: point at real routes once they exist */}
-                  <a href="#" className="transition-colors hover:text-white">
-                    {t(link)}
+              {group.links.map((link) => (
+                <li key={link.id}>
+                  {/* TODO: use link.url once the pages it points at (/pages/..., /catalogue/...) exist */}
+                  <a href="#" className="text-bidi-plain transition-colors hover:text-white">
+                    {link.title}
                   </a>
                 </li>
               ))}

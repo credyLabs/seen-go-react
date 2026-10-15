@@ -61,10 +61,14 @@ export async function request<T>(url: string, { body, token, headers, ...init }:
   }
 
   if (!response.ok) {
+    // The spec's {"error": "..."}; some services send {"message": "...", "errorCode": "..."}
+    const body = data && typeof data === "object" ? (data as { error?: unknown; message?: unknown }) : null
     const message =
-      data && typeof data === "object" && "error" in data && typeof data.error === "string"
-        ? data.error
-        : response.statusText || `Request failed (${response.status})`
+      typeof body?.error === "string"
+        ? body.error
+        : typeof body?.message === "string"
+          ? body.message
+          : response.statusText || `Request failed (${response.status})`
     throw new ApiError(response.status, message)
   }
   return data as T

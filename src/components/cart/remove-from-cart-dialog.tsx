@@ -1,4 +1,5 @@
 import { Heart, ImageOff } from "lucide-react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { canMoveToWishlist, useMoveToWishlist } from "@/components/cart/move-to-wishlist"
@@ -6,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/utils"
-import { useCartStore, type CartLine } from "@/stores/cart-store"
+import { useRemoveCartLine } from "@/components/cart/use-remove-cart-line"
+import type { CartLine } from "@/stores/cart-store"
 
 export function RemoveFromCartDialog({
   line,
@@ -17,9 +19,22 @@ export function RemoveFromCartDialog({
   onOpenChange: (open: boolean) => void
 }) {
   const { t, i18n } = useTranslation()
-  const removeItem = useCartStore((state) => state.removeItem)
   const moveToWishlist = useMoveToWishlist()
-  const close = () => onOpenChange(false)
+  const removeLine = useRemoveCartLine()
+  const [pending, setPending] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const close = () => {
+    setFailed(false)
+    onOpenChange(false)
+  }
+  const confirmRemove = async (target: CartLine) => {
+    setPending(true)
+    setFailed(false)
+    const ok = await removeLine(target)
+    setPending(false)
+    if (ok) close()
+    else setFailed(true)
+  }
 
   return (
     <Dialog open={!!line} onOpenChange={onOpenChange}>
@@ -51,12 +66,22 @@ export function RemoveFromCartDialog({
               </div>
             </div>
 
+            {failed && (
+              <p role="alert" className="rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                {t("cart.errors.remove")}
+              </p>
+            )}
+
             <div className="flex flex-col gap-2">
               {canMoveToWishlist(line) && (
                 <Button
-                  onClick={() => {
-                    moveToWishlist(line)
-                    close()
+                  disabled={pending}
+                  onClick={async () => {
+                    setPending(true)
+                    const ok = await moveToWishlist(line)
+                    setPending(false)
+                    if (ok) close()
+                    else setFailed(true)
                   }}
                   className="h-10 rounded-full bg-brand-gradient text-white shadow-md hover:opacity-90"
                 >
@@ -65,10 +90,8 @@ export function RemoveFromCartDialog({
               )}
               <Button
                 variant="outline"
-                onClick={() => {
-                  removeItem(line.lineId)
-                  close()
-                }}
+                disabled={pending}
+                onClick={() => void confirmRemove(line)}
                 className={cn("h-10 rounded-full bg-card font-semibold text-destructive hover:text-destructive")}
               >
                 {t("cart.removeDialog.remove")}

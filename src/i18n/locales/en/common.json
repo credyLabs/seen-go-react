@@ -25,7 +25,9 @@
         "deal": "Deal",
         "hot": "Hot"
       },
-      "priceUnavailable": "Price unavailable"
+      "priceUnavailable": "Price unavailable",
+      "inCart": "{{name}} in cart",
+      "removeFromCart": "Remove from cart"
     },
     "trending": {
       "eyebrow": "Loved this week",
@@ -162,8 +164,42 @@
     "errors": {
       "invalidCredentials": "Incorrect email or password.",
       "network": "Can't reach the server. Check your connection and try again.",
-      "generic": "Something went wrong. Please try again."
-    }
+      "generic": "Something went wrong. Please try again.",
+      "emailTaken": "An account with this email already exists. Try signing in instead.",
+      "passwordPolicy": "Choose a stronger password: at least 8 characters with upper and lower case letters, a number and a symbol.",
+      "invalidCode": "That code is invalid or has expired. Check the email and try again.",
+      "confirmedSignIn": "Your account is confirmed, but we couldn't sign you in automatically. Please sign in."
+    },
+    "creatingAccount": "Creating your account…",
+    "confirmTitle": "Check Your Email",
+    "confirmSubtitle": "We sent a confirmation code to",
+    "confirmCode": "Confirmation code",
+    "confirmButton": "Confirm & Sign In",
+    "confirming": "Confirming…",
+    "useDifferentEmail": "Use a different email",
+    "passwordsMatch": "Passwords match",
+    "passwordRuleUnmet": "(not met yet)",
+    "passwordStrength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "strong": "Strong"
+    },
+    "passwordRules": {
+      "length": "Min 8",
+      "upper": "Upper",
+      "lower": "Lower",
+      "number": "Digit",
+      "symbol": "Symbol"
+    },
+    "passwordRulesFull": {
+      "length": "At least 8 characters",
+      "upper": "An uppercase letter",
+      "lower": "A lowercase letter",
+      "number": "A number",
+      "symbol": "A symbol (e.g. ! @ # $)"
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "header": {
     "phone": "800-SEENGO",
@@ -180,27 +216,6 @@
     "myAccount": "My account",
     "orders": "My orders",
     "allCategories": "All categories",
-    "categories": {
-      "smartphones": "Smartphones",
-      "laptops": "Laptops",
-      "audio": "Audio",
-      "wearables": "Wearables",
-      "tablets": "Tablets",
-      "gaming": "Gaming",
-      "smartHome": "Smart Home",
-      "cameras": "Cameras",
-      "accessories": "Accessories",
-      "earbuds": "Earbuds",
-      "monitors": "Monitors",
-      "consoles": "Consoles",
-      "fitnessTrackers": "Fitness Trackers",
-      "eReaders": "E-Readers",
-      "drones": "Drones",
-      "chargers": "Chargers",
-      "refurbished": "Refurbished",
-      "brands": "Brands",
-      "deals": "Deals"
-    },
     "megaMenu": {
       "viewAll": "View all",
       "loading": "Loading categories…",
@@ -227,26 +242,6 @@
     "tagline": "Seengo is the UAE’s premium electronics marketplace.",
     "emailPlaceholder": "Get deals",
     "subscribe": "Subscribe",
-    "shop": "Shop",
-    "help": "Help",
-    "company": "Company",
-    "legal": "Legal",
-    "allBrands": "All brands",
-    "orderTracking": "Order tracking",
-    "returns": "Returns & refunds",
-    "warranty": "Warranty",
-    "shipping": "Shipping",
-    "faq": "FAQ",
-    "about": "About Seengo",
-    "careers": "Careers",
-    "press": "Press",
-    "sellWithUs": "Sell with us",
-    "affiliate": "Affiliate",
-    "terms": "Terms",
-    "privacy": "Privacy",
-    "cookies": "Cookies",
-    "vatInfo": "VAT info",
-    "tradeLicense": "Trade license",
     "copyright": "© {{year}} Seengo Marketplace · Dubai, UAE · Trade licence #SG-2026-118",
     "cod": "COD"
   },
@@ -255,7 +250,6 @@
     "addToWishlist": "Add to wishlist",
     "removeFromWishlist": "Remove from wishlist",
     "save": "Save {{percent}}%",
-    "color": "Color",
     "quantity": "Quantity",
     "decrease": "Decrease quantity",
     "increase": "Increase quantity",
@@ -288,7 +282,13 @@
     "loading": "Loading product",
     "reviewsError": "We couldn't load the reviews.",
     "noWrittenReviews": "No written reviews yet.",
-    "verifiedPurchase": "Verified purchase"
+    "verifiedPurchase": "Verified purchase",
+    "boughtTogether": {
+      "title": "Frequently bought together",
+      "total_one": "Price for {{count}} item",
+      "total_other": "Total for {{count}} items",
+      "addAll": "Add all to cart"
+    }
   },
   "videoPlayer": {
     "label": "Video: {{title}}",
@@ -340,7 +340,16 @@
       "bodyNoWishlist": "This item will be removed from your cart.",
       "moveToWishlist": "Move to Wishlist",
       "remove": "Remove Item"
-    }
+    },
+    "errors": {
+      "notSold": "No seller has this in stock right now.",
+      "network": "Can't reach the server. Check your connection and try again.",
+      "add": "We couldn't add this to your cart. Please try again.",
+      "update": "We couldn't update the quantity. Please try again.",
+      "remove": "We couldn't remove this item. Please try again."
+    },
+    "loadError": "We couldn't load your cart",
+    "loading": "Loading your cart"
   },
   "orders": {
     "title": "My Orders",
@@ -381,15 +390,28 @@
     "writeReview": "Write a Review",
     "pagination": "Pagination",
     "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "nextPage": "Next page",
+    "deliverTo": "Deliver to {{name}}:",
+    "addressesTitle": "Delivery addresses",
+    "addressesHint": "Used when you check out. Set the one you use most as default."
   },
   "wishlist": {
     "title": "My Wishlist",
-    "remove": "Remove",
     "emptyTitle": "Your Wishlist is Empty",
     "emptyBody": "Tap the heart on any product to save it here for later.",
     "itemCount_one": "{{count}} item",
-    "itemCount_other": "{{count}} items"
+    "itemCount_other": "{{count}} items",
+    "removeItem": "Remove {{name}} from wishlist",
+    "unavailable": "This product is no longer available.",
+    "removeUnavailable": "Remove",
+    "loadError": "We couldn't load your wishlist",
+    "loading": "Loading your wishlist",
+    "removeDialog": {
+      "title": "Remove from Wishlist?",
+      "body": "You can save it again any time from the product page.",
+      "confirm": "Remove",
+      "error": "We couldn't remove this item. Please try again."
+    }
   },
   "profile": {
     "title": "Profile Settings",

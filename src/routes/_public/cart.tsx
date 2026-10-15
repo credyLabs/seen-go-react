@@ -3,6 +3,7 @@ import {
   Check,
   Heart,
   ImageOff,
+  Loader2,
   Lock,
   Minus,
   Plus,
@@ -12,9 +13,13 @@ import {
   Trash2,
   Truck,
 } from "lucide-react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState, type FormEvent } from "react"
 import { useTranslation } from "react-i18next"
 
+import { cartQueryOptions, updateCartItem, type ApiCart } from "@/api/cart"
+import { ApiError } from "@/api/http"
+import { BrandError, BrandLoader } from "@/components/brand/brand-status"
 import { canMoveToWishlist, useMoveToWishlist } from "@/components/cart/move-to-wishlist"
 import { RemoveFromCartDialog } from "@/components/cart/remove-from-cart-dialog"
 import { ServiceHighlights } from "@/components/home/service-highlights"
@@ -31,33 +36,85 @@ import { Input } from "@/components/ui/input"
 import { useAuth } from "@/lib/auth"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/utils"
-import {
-  MAX_LINE_QUANTITY,
-  VAT_RATE,
-  cartTotals,
-  selectCartCount,
-  useCartStore,
-  type CartLine,
-} from "@/stores/cart-store"
+import { MAX_LINE_QUANTITY, useCartStore, type CartLine } from "@/stores/cart-store"
 
 export const Route = createFileRoute("/_public/cart")({
   component: CartPage,
 })
 
+// Signed in: the cart comes from GET /cart, whose items carry their product's
+// details (photo, slug, brand, stock). This browser's copy of a line (matched
+// by the seller listing) only fills in anything the API leaves out.
+function toCartLines(cart: ApiCart, saved: CartLine[]): CartLine[] {
+  return cart.items.map((item) => {
+    const local = saved.find((line) => line.listingId === item.listingId)
+    const slug = item.product?.slug ?? local?.slug
+    const available = item.bestListing?.available
+    const limit = item.product?.maxPurchaseQuantity ?? undefined
+    return {
+      lineId: item.id,
+      itemId: item.id,
+      listingId: item.listingId,
+      productId: slug ?? local?.productId ?? item.listingId,
+      slug,
+      productUuid: item.productId ?? item.product?.id ?? local?.productUuid,
+      name: item.product?.name ?? item.productName,
+      brand: item.brandName ?? local?.brand,
+      image: item.primaryImageUrl ?? item.media?.[0]?.cdnUrl ?? local?.image ?? null,
+      // "Standard" is the only variant of most products; not worth a line
+      variant: item.variantName && item.variantName !== "Standard" ? item.variantName : undefined,
+      price: item.unitPrice,
+      originalPrice: item.compareAtPrice && item.compareAtPrice > item.unitPrice ? item.compareAtPrice : undefined,
+      quantity: item.quantity,
+      // No offer with stock, or the product was taken down
+      inStock:
+        item.productAvailable === false ? false : item.bestListing ? item.bestListing.inStock !== false : item.bestListing === null ? false : undefined,
+      maxQuantity: Math.min(MAX_LINE_QUANTITY, limit ?? MAX_LINE_QUANTITY, available ?? MAX_LINE_QUANTITY),
+    }
+  })
+}
+
 function CartPage() {
-  const { isAuthenticated } = useAuth()
-  const lines = useCartStore((state) => state.lines)
+  const { t } = useTranslation()
+  const { isAuthenticated, token } = useAuth()
+  const saved = useCartStore((state) => state.lines)
+  const cart = useQuery(cartQueryOptions(token))
+
+  let content
+  // Guests can't add to the cart (adding asks them to sign in first)
+  if (!isAuthenticated) {
+    content = (
+      <div className="rounded-2xl border bg-card px-5 py-14 shadow-xs sm:py-20">
+        <EmptyCart guest />
+      </div>
+    )
+  } else if (cart.isError) {
+    content = (
+      <BrandError
+        title={t("cart.loadError")}
+        body={t("landing.error.body")}
+        onRetry={() => void cart.refetch()}
+        retrying={cart.isFetching}
+        className="rounded-2xl border bg-card"
+      />
+    )
+  } else if (!cart.data) {
+    content = <BrandLoader label={t("cart.loading")} className="rounded-2xl border bg-card" />
+  } else {
+    const lines = toCartLines(cart.data, saved)
+    content =
+      lines.length === 0 ? (
+        <div className="rounded-2xl border bg-card px-5 py-14 shadow-xs sm:py-20">
+          <EmptyCart guest={false} />
+        </div>
+      ) : (
+        <CartContents lines={lines} totals={cart.data} />
+      )
+  }
 
   return (
     <div className="flex flex-col gap-10">
-      {/* Guests can't add to the cart (adding asks them to sign in first) */}
-      {!isAuthenticated || lines.length === 0 ? (
-        <div className="rounded-2xl border bg-card px-5 py-14 shadow-xs sm:py-20">
-          <EmptyCart guest={!isAuthenticated} />
-        </div>
-      ) : (
-        <CartContents lines={lines} />
-      )}
+      {content}
       <ServiceHighlights />
     </div>
   )
@@ -96,9 +153,9 @@ function EmptyCart({ guest }: { guest: boolean }) {
   )
 }
 
-function CartContents({ lines }: { lines: CartLine[] }) {
+function CartContents({ lines, totals }: { lines: CartLine[]; totals: ApiCart }) {
   const { t } = useTranslation()
-  const count = useCartStore(selectCartCount)
+  const count = lines.reduce((sum, line) => sum + line.quantity, 0)
   // Line waiting for the "Remove from cart?" confirmation
   const [removing, setRemoving] = useState<CartLine | null>(null)
 
@@ -128,7 +185,7 @@ function CartContents({ lines }: { lines: CartLine[] }) {
             <CartLineCard key={line.lineId} line={line} onRemove={() => setRemoving(line)} />
           ))}
         </ul>
-        <OrderSummary lines={lines} count={count} />
+        <OrderSummary totals={totals} count={count} />
       </div>
 
       <RemoveFromCartDialog line={removing} onOpenChange={(open) => !open && setRemoving(null)} />
@@ -139,8 +196,26 @@ function CartContents({ lines }: { lines: CartLine[] }) {
 function CartLineCard({ line, onRemove }: { line: CartLine; onRemove: () => void }) {
   const { t, i18n } = useTranslation()
   const lang = i18n.language
-  const setQuantity = useCartStore((state) => state.setQuantity)
+  const { token } = useAuth()
+  const queryClient = useQueryClient()
   const moveToWishlist = useMoveToWishlist()
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // PATCH /cart/items/{itemId}, then reload the cart for the new totals
+  const setQuantity = async (quantity: number) => {
+    if (!line.itemId || !token) return
+    setBusy(true)
+    setError(null)
+    try {
+      await updateCartItem(token, line.itemId, quantity)
+    } catch (err) {
+      setError(err instanceof ApiError && err.status === 400 && err.message ? err.message : t("cart.errors.update"))
+    } finally {
+      await queryClient.invalidateQueries({ queryKey: ["cart"] })
+      setBusy(false)
+    }
+  }
   const savings = line.originalPrice && line.originalPrice > line.price ? line.originalPrice - line.price : 0
 
   // Standard delivery arrives the next day
@@ -189,11 +264,15 @@ function CartLineCard({ line, onRemove }: { line: CartLine; onRemove: () => void
         {line.variant && (
           <p className="text-xs text-muted-foreground">{t("cart.color", { color: line.variant })}</p>
         )}
-        {/* Only in-stock items can be added, so this reflects the time of adding */}
-        <p className="mt-1 flex items-center gap-1 text-xs font-medium text-success">
-          <Check className="size-3.5" />
-          {t("productPage.inStock")}
-        </p>
+        {/* Stock as GET /cart reports it now */}
+        {line.inStock === false ? (
+          <p className="mt-1 text-xs font-medium text-destructive">{t("productPage.outOfStock")}</p>
+        ) : (
+          <p className="mt-1 flex items-center gap-1 text-xs font-medium text-success">
+            <Check className="size-3.5" />
+            {t("productPage.inStock")}
+          </p>
+        )}
         <p className="flex items-center gap-1 text-xs text-success">
           <Truck className="size-3.5" />
           {t("cart.freeDelivery", { date: deliveryDate })}
@@ -216,29 +295,39 @@ function CartLineCard({ line, onRemove }: { line: CartLine; onRemove: () => void
         </div>
 
         <div className="flex h-9 items-center rounded-full border">
+          {/* − lowers the count (PATCH /cart/items/{itemId}); at 1 it becomes a bin that asks
+              to remove the line (DELETE /cart/items/{itemId}) */}
           <button
             type="button"
-            aria-label={t("productPage.decrease")}
-            disabled={line.quantity <= 1}
-            onClick={() => setQuantity(line.lineId, line.quantity - 1)}
-            className="flex size-9 items-center justify-center rounded-full disabled:opacity-40"
+            aria-label={t(line.quantity <= 1 ? "landing.product.removeFromCart" : "productPage.decrease")}
+            disabled={busy}
+            onClick={() => (line.quantity <= 1 ? onRemove() : void setQuantity(line.quantity - 1))}
+            className={cn(
+              "flex size-9 items-center justify-center rounded-full disabled:opacity-40",
+              line.quantity <= 1 && "text-destructive"
+            )}
           >
-            <Minus className="size-3.5" />
+            {line.quantity <= 1 ? <Trash2 className="size-3.5" /> : <Minus className="size-3.5" />}
           </button>
           <output aria-label={t("productPage.quantity")} className="w-6 text-center text-sm font-medium">
-            {line.quantity}
+            {busy ? <Loader2 className="mx-auto size-3.5 animate-spin" /> : line.quantity}
           </output>
           <button
             type="button"
             aria-label={t("productPage.increase")}
-            disabled={line.quantity >= MAX_LINE_QUANTITY}
-            onClick={() => setQuantity(line.lineId, line.quantity + 1)}
+            disabled={busy || line.quantity >= (line.maxQuantity ?? MAX_LINE_QUANTITY)}
+            onClick={() => void setQuantity(line.quantity + 1)}
             className="flex size-9 items-center justify-center rounded-full disabled:opacity-40"
           >
             <Plus className="size-3.5" />
           </button>
         </div>
 
+        {error && (
+          <p role="alert" className="max-w-56 text-xs text-destructive sm:text-end">
+            {error}
+          </p>
+        )}
         <div className="flex items-center gap-4 text-xs font-medium">
           <button
             type="button"
@@ -264,10 +353,11 @@ function CartLineCard({ line, onRemove }: { line: CartLine; onRemove: () => void
   )
 }
 
-function OrderSummary({ lines, count }: { lines: CartLine[]; count: number }) {
+function OrderSummary({ totals, count }: { totals: ApiCart; count: number }) {
   const { t, i18n } = useTranslation()
   const lang = i18n.language
-  const { subtotal, discount, vat, total } = cartTotals(lines)
+  // The server's figures (GET /cart): subtotal, coupon discount and total
+  const { subtotal, discount, total } = totals
   const [promoCode, setPromoCode] = useState("")
   const [promoMessage, setPromoMessage] = useState<string | null>(null)
 
@@ -322,10 +412,6 @@ function OrderSummary({ lines, count }: { lines: CartLine[]; count: number }) {
           <dt className="text-muted-foreground">{t("cart.shipping")}</dt>
           <dd className="font-semibold text-success uppercase">{t("cart.free")}</dd>
         </div>
-        <div className="flex justify-between">
-          <dt className="text-muted-foreground">{t("cart.vat", { rate: VAT_RATE * 100 })}</dt>
-          <dd>{formatPrice(vat, lang)}</dd>
-        </div>
         <div className="mt-1 flex justify-between border-t pt-3 text-base font-bold">
           <dt>{t("cart.total")}</dt>
           <dd>{formatPrice(total, lang)}</dd>
@@ -333,10 +419,13 @@ function OrderSummary({ lines, count }: { lines: CartLine[]; count: number }) {
       </dl>
 
       <div className="flex flex-col gap-2">
-        {/* TODO: checkout via POST /orders with a saved addressId once the flow is designed */}
-        <Button className="h-11 rounded-full bg-brand-gradient text-white shadow-md hover:opacity-90">
+        {/* Checkout picks a saved address and places the order (POST /orders) */}
+        <Link
+          to="/checkout"
+          className={cn(buttonVariants(), "h-11 rounded-full bg-brand-gradient text-white shadow-md hover:opacity-90")}
+        >
           {t("cart.checkout")}
-        </Button>
+        </Link>
         <Link
           to="/"
           className={cn(buttonVariants({ variant: "outline" }), "h-10 rounded-full bg-card font-semibold text-primary")}

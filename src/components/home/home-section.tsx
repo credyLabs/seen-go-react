@@ -67,6 +67,7 @@ export function HomeSection({ section }: { section: HomeSectionData }) {
           subtitle={subtitle}
           categories={items.map((item) => ({
             id: item.id,
+            categoryId: item.referenceId,
             label: item.label ?? "",
             image: item.imageUrl,
           }))}
@@ -90,6 +91,7 @@ export function HomeSection({ section }: { section: HomeSectionData }) {
           subtitle={subtitle}
           brands={items.map((item) => ({
             id: item.id,
+            brandId: item.referenceId,
             name: item.label ?? "",
             logoUrl: item.imageUrl,
           }))}

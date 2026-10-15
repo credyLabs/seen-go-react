@@ -1,45 +1,16 @@
 import { Popover } from "@base-ui/react/popover"
 import { useQuery } from "@tanstack/react-query"
 import { cn } from "cn"
-import {
-  ArrowRight,
-  Camera,
-  ChevronDown,
-  ChevronRight,
-  Gamepad2,
-  Headphones,
-  House,
-  Laptop,
-  Menu,
-  Plug,
-  Smartphone,
-  Tv,
-  Watch,
-  type LucideIcon,
-} from "lucide-react"
+import { ArrowRight, ChevronDown, ChevronRight, Menu } from "lucide-react"
+import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
-import {
-  categoryMenuQueryOptions,
-  type CategoryIcon,
-  type MenuCategory,
-} from "@/api/categories"
+import { categoryMenuQueryOptions, type MenuCategory } from "@/api/categories"
 import { buttonVariants } from "@/components/ui/button"
 import { useCategoryMenuStore } from "@/stores/category-menu-store"
 
-const ICONS: Record<CategoryIcon, LucideIcon> = {
-  smartphone: Smartphone,
-  laptop: Laptop,
-  headphones: Headphones,
-  watch: Watch,
-  camera: Camera,
-  gamepad: Gamepad2,
-  tv: Tv,
-  home: House,
-  plug: Plug,
-}
-
-// "All categories" button that opens a mega menu on hover or click.
+// "All categories" button that opens a mega menu on hover or click, built from
+// the GET /catalogue/categories tree.
 // Hovering (or focusing) a category on the left swaps the panel on the right.
 export function CategoryMegaMenu() {
   const { t } = useTranslation()
@@ -91,7 +62,8 @@ function MegaMenuBody() {
     (state) => state.setActiveCategory
   )
 
-  if (isPending || isError) {
+  // An empty tree is treated like a failed load: there is nothing to show
+  if (isPending || isError || data.length === 0) {
     return (
       <p className="p-6 text-sm text-muted-foreground">
         {isPending ? t("header.megaMenu.loading") : t("header.megaMenu.error")}
@@ -105,7 +77,6 @@ function MegaMenuBody() {
     <div className="grid max-h-[min(32rem,calc(100svh-12rem))] grid-cols-[11rem_minmax(0,1fr)] sm:grid-cols-[13rem_minmax(0,1fr)]">
       <ul className="overflow-y-auto border-e py-2">
         {data.map((category) => {
-          const Icon = ICONS[category.icon]
           const isActive = category.id === active.id
           return (
             <li key={category.id}>
@@ -122,7 +93,17 @@ function MegaMenuBody() {
                     : "text-foreground hover:bg-muted"
                 )}
               >
-                <Icon className="size-4 shrink-0" />
+                {/* Only the API's image; no placeholder when it has none */}
+                {category.imageUrl && (
+                  <img
+                    src={category.imageUrl}
+                    alt=""
+                    width={20}
+                    height={20}
+                    loading="lazy"
+                    className="size-5 shrink-0 rounded object-cover"
+                  />
+                )}
                 <span className="flex-1 leading-tight">{category.label}</span>
                 {isActive && (
                   <ChevronRight className="size-4 shrink-0 rtl:rotate-180" />
@@ -146,36 +127,43 @@ function CategoryPanel({ category }: { category: MenuCategory }) {
   return (
     <div className="overflow-y-auto p-5 sm:p-6">
       <h2 className="mb-5 text-lg font-bold text-primary dark:text-foreground">
-        {category.label}
+        <Link to="/search" search={{ categoryIds: category.id }} onClick={close} className="hover:underline">
+          {category.label}
+        </Link>
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {category.groups.map((group) => (
-          <section key={group.title}>
+          <section key={group.id}>
             <h3 className="mb-3 text-sm font-semibold text-primary dark:text-foreground">
-              {group.title}
+              <Link to="/search" search={{ categoryIds: group.id }} onClick={close} className="hover:underline">
+                {group.label}
+              </Link>
             </h3>
-            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
-              {/* TODO: switch to router <Link>s once category routes exist */}
-              {group.links.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    onClick={close}
-                    className="transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <a
-              href={group.href}
+            {group.links.length > 0 && (
+              <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+                {group.links.map((link) => (
+                  <li key={link.id}>
+                    <Link
+                      to="/search"
+                      search={{ categoryIds: link.id }}
+                      onClick={close}
+                      className="transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link
+              to="/search"
+              search={{ categoryIds: group.id }}
               onClick={close}
               className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary underline underline-offset-4 dark:text-foreground"
             >
               {t("header.megaMenu.viewAll")}
               <ArrowRight className="size-3.5 rtl:rotate-180" />
-            </a>
+            </Link>
           </section>
         ))}
       </div>

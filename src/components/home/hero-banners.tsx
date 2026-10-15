@@ -1,64 +1,49 @@
-import { useQuery } from "@tanstack/react-query"
-import type { TFunction } from "i18next"
 import { useTranslation } from "react-i18next"
 
 import {
   activeItems,
-  homeQueryOptions,
-  itemBadge,
   itemPrice,
   itemSlug,
   sortSections,
   type HomeSection,
 } from "@/api/home"
 import { HeroCarousel, type HeroSlide } from "@/components/home/hero-carousel"
+import { useHomeData } from "@/stores/home-store"
 
-// One slide per product in each BANNER section: the product's badge (or the
-// campaign title) is the pill, its name, short description, price and photo
-// fill the rest. A banner section without products becomes one slide from its
-// own fields.
-function toSlides(sections: HomeSection[], t: TFunction): HeroSlide[] {
+// One slide per BANNER item in the BANNER sections, filled from the item's
+// fields (the ready-made banner image in imageUrl isn't used)
+function toSlides(sections: HomeSection[]): HeroSlide[] {
   return sortSections(sections)
     .filter((section) => section.type === "BANNER")
-    .flatMap((section) => {
-      const products = activeItems(section).filter((item) => item.itemType === "PRODUCT")
-      if (products.length === 0) {
-        return [
-          {
-            id: section.id,
-            title: section.title,
-            tagline: section.subtitle,
-            image: section.imageUrl,
-          },
-        ]
-      }
-      return products.map((item) => {
-        const badge = itemBadge(item)
-        return {
-          id: item.id,
-          eyebrow: badge ? t(`landing.product.badges.${badge}`) : section.title,
-          title: item.label ?? item.name ?? section.title,
-          tagline: item.shortDescription ?? item.description ?? section.subtitle,
-          image: item.primaryImageUrl ?? item.imageUrl ?? section.imageUrl,
-          price: itemPrice(item).price,
-          productSlug: itemSlug(item),
-        }
-      })
-    })
+    .flatMap((section) =>
+      activeItems(section)
+        .filter((item) => item.itemType === "BANNER")
+        .map((item) => {
+          const title = item.name ?? item.label ?? section.title
+          return {
+            id: item.id,
+            // Shown exactly as sent, e.g. "HOT"
+            eyebrow: item.badgeTag,
+            title,
+            // The label is the marketing line; when it just repeats the name, use the subtitle
+            tagline: item.label && item.label !== title ? item.label : item.subtitle,
+            price: itemPrice(item).price,
+            bgColor: item.bgColor,
+            image: item.productImageUrl ?? item.primaryImageUrl ?? null,
+            productSlug: itemSlug(item),
+          }
+        })
+    )
 }
 
-// Hero carousel from the BANNER sections of GET /catalogue/home. Shares the
-// cached home query with the sections below, so it's one request; on error the
-// hero is simply left out (the sections below show the retry message).
+// Hero carousel from the BANNER sections of GET /catalogue/home. Reads the home
+// store, shared with the sections below, so it's one request.
 export function HeroBanners() {
-  const { t, i18n } = useTranslation()
-  const { data, isPending, isError } = useQuery(homeQueryOptions(i18n.language))
+  const { i18n } = useTranslation()
+  const { data } = useHomeData(i18n.language)
+  // The home page shows the loader and error states for the whole page
+  if (!data) return null
 
-  if (isPending) {
-    return <div className="aspect-1156/346 w-full animate-pulse rounded-2xl bg-muted" />
-  }
-  if (isError) return null
-
-  const slides = toSlides(data.sections, t)
+  const slides = toSlides(data.sections)
   return slides.length > 0 ? <HeroCarousel slides={slides} /> : null
 }
