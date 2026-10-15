@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router"
-import { ChevronDown, Heart, LayoutDashboard, LogOut, Package, UserCog } from "lucide-react"
+import { ChevronDown, CircleHelp, Heart, LogOut, MapPin, Package, Settings, type LucideIcon } from "lucide-react"
 import { flushSync } from "react-dom"
 import { useTranslation } from "react-i18next"
 
@@ -9,12 +9,22 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/lib/auth"
 import { useCartStore } from "@/stores/cart-store"
 import { useWishlistStore } from "@/stores/wishlist-store"
+
+const ITEM_CLASS = "gap-2.5 rounded-lg px-2.5 py-2 text-sm"
+
+// TODO: point Help & Support at the support page once it exists
+const MENU_ITEMS: { to?: "/orders" | "/wishlist" | "/profile" | "/addresses"; label: string; Icon: LucideIcon }[] = [
+  { to: "/orders", label: "header.menu.orders", Icon: Package },
+  { to: "/wishlist", label: "header.menu.wishlist", Icon: Heart },
+  { to: "/profile", label: "header.menu.profile", Icon: Settings },
+  { label: "header.menu.help", Icon: CircleHelp },
+  { to: "/addresses", label: "header.menu.addresses", Icon: MapPin },
+]
 
 export function UserMenu() {
   const { t } = useTranslation()
@@ -33,7 +43,6 @@ export function UserMenu() {
     await router.invalidate()
   }
 
-  const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(" ")
   const initials =
     [user?.firstName, user?.lastName]
       .filter(Boolean)
@@ -63,34 +72,17 @@ export function UserMenu() {
         <ChevronDown className="size-4 text-muted-foreground" />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-60">
-        <div className="flex flex-col px-2 py-2">
-          <span className="truncate text-sm font-semibold">{fullName}</span>
-          <span className="truncate text-xs text-muted-foreground">
-            {user?.email}
-          </span>
-        </div>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem render={<Link to="/dashboard" />}>
-          <LayoutDashboard />
-          {t("header.myAccount")}
-        </DropdownMenuItem>
-        <DropdownMenuItem render={<Link to="/profile" />}>
-          <UserCog />
-          {t("header.profileSettings")}
-        </DropdownMenuItem>
-        <DropdownMenuItem render={<Link to="/orders" />}>
-          <Package />
-          {t("header.orders")}
-        </DropdownMenuItem>
-        <DropdownMenuItem render={<Link to="/wishlist" />}>
-          <Heart />
-          {t("header.myWishlist")}
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={handleLogout}>
-          <LogOut />
-          {t("logout")}
+      {/* As in the design: six large rows in a rounded panel, Logout in red */}
+      <DropdownMenuContent align="end" className="w-48 rounded-xl p-1.5 shadow-lg">
+        {MENU_ITEMS.map(({ to, label, Icon }) => (
+          <DropdownMenuItem key={label} render={to ? <Link to={to} /> : <a href="#" />} className={ITEM_CLASS}>
+            <Icon className="size-4" />
+            {t(label)}
+          </DropdownMenuItem>
+        ))}
+        <DropdownMenuItem variant="destructive" onClick={handleLogout} className={ITEM_CLASS}>
+          <LogOut className="size-4" />
+          {t("header.menu.logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

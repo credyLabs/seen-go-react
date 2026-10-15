@@ -1,12 +1,17 @@
-import { useNavigate } from "@tanstack/react-router"
-import { Package, Star } from "lucide-react"
+import { useQueryClient } from "@tanstack/react-query"
+import { Link, useNavigate } from "@tanstack/react-router"
+import { Loader2, Package, Star } from "lucide-react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
+
+import { addCartItem } from "@/api/cart"
+import { ApiError } from "@/api/http"
 
 import { orderStage, type OrderDetail, type OrderStage, type OrderSummary } from "@/api/orders"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/format"
+import { useAuth } from "@/lib/auth"
 import { cn } from "@/lib/utils"
-import { useCartStore } from "@/stores/cart-store"
 
 const STAGE_BADGE: Record<OrderStage, string> = {
   processing: "bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400",
@@ -30,26 +35,31 @@ export function OrderCard({ order, detail }: { order: OrderSummary; detail?: Ord
   const { t, i18n } = useTranslation()
   const lang = i18n.language
   const navigate = useNavigate()
-  const addToCart = useCartStore((state) => state.addItem)
+  const { token } = useAuth()
+  const queryClient = useQueryClient()
   const stage = orderStage(order)
-  const [first, ...others] = detail?.items ?? []
+  // The list includes the lines; older responses need the detail call
+  const items = order.items ?? detail?.items ?? []
+  const [first, ...others] = items
+  const firstImage = first?.primaryImageUrl ?? first?.media?.find((m) => m.mediaType !== "VIDEO")?.cdnUrl ?? null
+  const [reordering, setReordering] = useState(false)
+  const [reorderError, setReorderError] = useState<string | null>(null)
 
-  // "Buy again" / "Reorder": put every line back in the cart.
-  // TODO: POST /cart/items with each listingId once the cart API is wired
-  const reorder = () => {
-    for (const item of detail?.items ?? []) {
-      addToCart(
-        {
-          productId: item.listingId,
-          name: item.nameSnapshot,
-          image: null,
-          variant: item.skuSnapshot ?? undefined,
-          price: item.unitPrice,
-        },
-        item.quantity
-      )
+  // "Buy again" / "Reorder": POST /cart/items for each line's seller listing,
+  // then open the cart. Stops at the first refusal and shows its reason.
+  const reorder = async () => {
+    if (!token) return
+    setReordering(true)
+    setReorderError(null)
+    try {
+      for (const item of items) await addCartItem(token, item.listingId, item.quantity)
+      await queryClient.invalidateQueries({ queryKey: ["cart"] })
+      void navigate({ to: "/cart" })
+    } catch (err) {
+      setReorderError(err instanceof ApiError && err.status === 400 && err.message ? err.message : t("cart.errors.add"))
+    } finally {
+      setReordering(false)
     }
-    void navigate({ to: "/cart" })
   }
 
   const placedOn = new Date(order.createdAt).toLocaleDateString(lang, {
@@ -76,16 +86,22 @@ export function OrderCard({ order, detail }: { order: OrderSummary; detail?: Ord
       </header>
 
       <div className="flex items-center gap-4 border-t px-5 py-4">
-        {/* TODO: show the product image once order items include one */}
-        <span className="flex size-16 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-          <Package className="size-6" />
+        <span className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted text-muted-foreground">
+          {firstImage ? <img src={firstImage} alt="" className="size-full object-cover" /> : <Package className="size-6" />}
         </span>
         <div className="min-w-0 flex-1">
           {first ? (
             <>
               <p className="text-bidi-plain line-clamp-2 text-sm font-semibold">
-                {first.nameSnapshot}
-                {first.skuSnapshot && ` - ${first.skuSnapshot}`}
+                {first.product?.slug ? (
+                  <Link to="/products/$productId" params={{ productId: first.product.slug }} className="hover:underline">
+                    {first.nameSnapshot}
+                  </Link>
+                ) : (
+                  first.nameSnapshot
+                )}
+                {/* "Standard" is the only variant of most products */}
+                {first.skuSnapshot && first.skuSnapshot !== "Standard" && ` - ${first.skuSnapshot}`}
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
                 {t("orders.quantity", { count: first.quantity })}
@@ -122,14 +138,20 @@ export function OrderCard({ order, detail }: { order: OrderSummary; detail?: Ord
             </Button>
           ) : (
             <Button
-              disabled={!detail}
-              onClick={reorder}
+              disabled={items.length === 0 || reordering}
+              onClick={() => void reorder()}
               className={cn(PILL, "bg-secondary text-secondary-foreground hover:bg-secondary/90")}
             >
+              {reordering && <Loader2 className="animate-spin" />}
               {t(stage === "cancelled" ? "orders.reorder" : "orders.buyAgain")}
             </Button>
           )}
         </div>
+        {reorderError && (
+          <p role="alert" className="w-full text-end text-xs text-destructive">
+            {reorderError}
+          </p>
+        )}
       </footer>
 
       {stage === "delivered" && (
