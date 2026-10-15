@@ -228,7 +228,15 @@
     "wishlistCount_other": "Wishlist, {{count}} items",
     "profileSettings": "Profile settings",
     "addresses": "Saved addresses",
-    "seeAllResults": "See all results for “{{q}}”"
+    "seeAllResults": "See all results for “{{q}}”",
+    "menu": {
+      "orders": "My Orders",
+      "wishlist": "My Wishlist",
+      "profile": "Profile Settings",
+      "help": "Help & Support",
+      "addresses": "Saved Address",
+      "logout": "Logout"
+    }
   },
   "footer": {
     "tagline": "Seengo is the UAE’s premium electronics marketplace.",
@@ -568,8 +576,6 @@
     "title": "Checkout",
     "deliverTo": "Deliver to",
     "deliverToHint": "Pick a saved address, or add a new one.",
-    "notes": "Delivery notes (optional)",
-    "notesPlaceholder": "e.g. Leave with reception",
     "placeOrder": "Place Order",
     "addAddressFirst": "Add a delivery address to place your order.",
     "emptyTitle": "Your cart is empty",
