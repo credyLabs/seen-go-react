@@ -6,7 +6,8 @@
 // auth: sign-in plus the account APIs (/auth/me, /auth/profile, picture)
 // notifications: notification preferences
 // wishlist: the wishlist stays in the browser (no /wishlist calls)
-export type MockableApi = "auth" | "notifications" | "wishlist"
+// passwordReset: forgot / reset password (any email; code 000000 is "wrong")
+export type MockableApi = "auth" | "notifications" | "wishlist" | "passwordReset"
 
 const mocked = new Set(
   (import.meta.env.VITE_MOCK_APIS ?? "")

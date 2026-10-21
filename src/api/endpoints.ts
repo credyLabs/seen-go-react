@@ -36,7 +36,9 @@ export const endpoints = {
     confirm: url("auth", "/auth/confirm"), // POST
     refresh: url("auth", "/auth/refresh"), // POST
     forgotPassword: url("auth", "/auth/forgot-password"), // POST
+    verifyResetCode: url("auth", "/auth/verify-reset-code"), // POST
     resetPassword: url("auth", "/auth/reset-password"), // POST
+    changePassword: url("auth", "/auth/change-password"), // POST, signed in
     me: url("auth", "/auth/me"), // GET
     profile: url("auth", "/auth/profile"), // PUT
     profilePicture: url("auth", "/auth/profile/picture"), // POST (multipart), DELETE

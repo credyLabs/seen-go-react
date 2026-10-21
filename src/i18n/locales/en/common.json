@@ -168,7 +168,9 @@
       "emailTaken": "An account with this email already exists. Try signing in instead.",
       "passwordPolicy": "Choose a stronger password: at least 8 characters with upper and lower case letters, a number and a symbol.",
       "invalidCode": "That code is invalid or has expired. Check the email and try again.",
-      "confirmedSignIn": "Your account is confirmed, but we couldn't sign you in automatically. Please sign in."
+      "confirmedSignIn": "Your account is confirmed, but we couldn't sign you in automatically. Please sign in.",
+      "unknownEmail": "We couldn't find an account with that email.",
+      "resetExpired": "Your reset session has expired. Request a new code and try again."
     },
     "creatingAccount": "Creating your account…",
     "confirmTitle": "Check Your Email",
@@ -199,7 +201,29 @@
       "symbol": "A symbol (e.g. ! @ # $)"
     },
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "forgot": {
+      "title": "Forgot Your Password?",
+      "subtitle": "Enter your account's email and we'll send you a code to reset it.",
+      "sendCode": "Send Code",
+      "sending": "Sending…",
+      "codeSent": "We sent a 6-digit code to",
+      "code": "Verification code",
+      "continue": "Continue",
+      "resend": "Resend code",
+      "resent": "Code sent again",
+      "newTitle": "Set a New Password",
+      "newSubtitle": "Choose a strong password you haven't used before.",
+      "newPassword": "New Password",
+      "reset": "Reset Password",
+      "resetting": "Resetting…",
+      "doneTitle": "Password Reset",
+      "doneBody": "Your password for {{email}} has been changed. Sign in with your new password.",
+      "signInNow": "Sign In",
+      "expiresIn": "Code expires in {{time}}",
+      "expired": "This code has expired. Tap “Resend code” to get a new one.",
+      "verifying": "Verifying…"
+    }
   },
   "header": {
     "phone": "800-SEENGO",
@@ -438,7 +462,6 @@
     "updatePassword": "Update Password",
     "passwordUpdated": "Password updated",
     "passwordError": "Couldn't update your password. Please try again.",
-    "passwordUnavailable": "Changing your password isn't available yet.",
     "notifications": "Notification Preferences",
     "preferences": {
       "email": {

@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 
 import { confirmSignUp, signIn, signUp, tokensFromSignIn, userFromSignIn } from "@/api/auth"
 import { ApiError } from "@/api/http"
+import { CODE_LENGTH, CodeInput } from "@/components/auth/code-input"
 import { PasswordMatch, PasswordStrength } from "@/components/auth/password-feedback"
 import { SocialAuthButtons } from "@/components/auth/social-auth-buttons"
 import { useCompleteAuth } from "@/components/auth/use-complete-auth"
@@ -236,20 +237,7 @@ function ConfirmStep({ account, onBack }: { account: PendingAccount; onBack: () 
         <FieldGroup className="gap-4">
           <Field>
             <FieldLabel htmlFor="code">{t("auth.confirmCode")}</FieldLabel>
-            <Input
-              id="code"
-              name="code"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              required
-              autoFocus
-              maxLength={10}
-              dir="ltr"
-              value={code}
-              onChange={(event) => setCode(event.target.value.replace(/\s/g, ""))}
-              placeholder="483921"
-              className="h-11 rounded-lg text-center text-lg tracking-[0.4em]"
-            />
+            <CodeInput id="code" value={code} onChange={setCode} />
           </Field>
 
           {confirm.isError && (
@@ -260,7 +248,7 @@ function ConfirmStep({ account, onBack }: { account: PendingAccount; onBack: () 
 
           <Button
             type="submit"
-            disabled={confirm.isPending || !code.trim()}
+            disabled={confirm.isPending || code.length !== CODE_LENGTH}
             className="h-9 rounded-full bg-brand-gradient text-white shadow-md hover:opacity-90"
           >
             {confirm.isPending && <Loader2 className="animate-spin" />}

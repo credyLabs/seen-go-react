@@ -457,6 +457,7 @@ function PhotoSection({ profile }: { profile: Profile }) {
 
 function PasswordSection() {
   const { t } = useTranslation()
+  const { token } = useAuth()
   const [fields, setFields] = useState({ current: "", next: "", confirm: "" })
   const [showErrors, setShowErrors] = useState(false)
 
@@ -473,22 +474,23 @@ function PasswordSection() {
   }
 
   const update = useMutation({
-    mutationFn: () => changePassword(fields.current, fields.next),
+    mutationFn: () => changePassword(token!, fields.current, fields.next),
     onSuccess: () => {
       setFields({ current: "", next: "", confirm: "" })
       setShowErrors(false)
     },
   })
 
-  const updateError =
-    update.error instanceof ApiError
-      ? update.error.status === 501
-        ? t("profile.passwordUnavailable")
-        : update.error.status === 400 &&
-            update.error.message.includes("incorrect")
-          ? t("profile.errors.currentIncorrect")
-          : t("profile.passwordError")
-      : null
+  // Cognito's messages, passed through by the backend: a wrong current password is
+  // NotAuthorizedException ("Incorrect username or password."), a weak new one
+  // "Password does not conform to policy"
+  const updateError = !update.error
+    ? null
+    : update.error instanceof ApiError && /incorrect|not ?authorized/i.test(update.error.message)
+      ? t("profile.errors.currentIncorrect")
+      : update.error instanceof ApiError && /policy|conform/i.test(update.error.message)
+        ? t("auth.errors.passwordPolicy")
+        : t("profile.passwordError")
 
   const submit = (event: FormEvent) => {
     event.preventDefault()
