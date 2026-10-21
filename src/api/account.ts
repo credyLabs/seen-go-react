@@ -115,14 +115,20 @@ export async function uploadProfilePicture(token: string, user: AuthUser | null,
   return data as { message: string; profilePictureUrl: string }
 }
 
-// TODO: the spec has no change-password endpoint (only forgot/reset); wire it once one exists
-export async function changePassword(currentPassword: string, newPassword: string) {
-  if (!isMocked("auth")) throw new ApiError(501, "Password change isn't available yet")
-  await mockDelay()
-  // Same convention as dummy sign-in: "wrong" is treated as an incorrect password
-  if (currentPassword === "wrong") throw new ApiError(400, "Current password is incorrect")
-  if (newPassword.length < 8) throw new ApiError(400, "Password does not meet the policy")
-  return { message: "Password updated" }
+// POST /auth/change-password — the signed-in user's current and new password
+export async function changePassword(token: string, currentPassword: string, newPassword: string) {
+  if (isMocked("auth")) {
+    await mockDelay()
+    // Same convention as dummy sign-in: "wrong" is treated as an incorrect password
+    if (currentPassword === "wrong") throw new ApiError(400, "Current password is incorrect")
+    if (newPassword.length < 8) throw new ApiError(400, "Password does not meet the policy")
+    return { message: "Password updated" }
+  }
+  return request<{ message: string }>(endpoints.auth.changePassword, {
+    method: "POST",
+    token,
+    body: { previousPassword: currentPassword, newPassword },
+  })
 }
 
 function readPromotions() {

@@ -34,6 +34,8 @@ function AuthLayout() {
   const search = Route.useSearch()
   const matchRoute = useMatchRoute()
   const isSignup = !!matchRoute({ to: "/signup" })
+  // Neither tab applies on forgot-password, so it gets a back button instead
+  const isForgotPassword = !!matchRoute({ to: "/forgot-password" })
 
   const tabClassName =
     "flex h-7 items-center text-xs sm:h-8 justify-center rounded-full font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -72,26 +74,38 @@ function AuthLayout() {
 
           <div className="flex flex-1 items-center justify-center py-6 lg:py-4">
             <div className="flex w-full max-w-sm flex-col gap-5 lg:max-w-xs">
-              <nav className="grid grid-cols-2 rounded-full bg-accent p-1">
+              {isForgotPassword ? (
                 <Link
                   to="/login"
                   resetScroll={false}
                   search={search}
-                  className={tabClassName}
-                  activeProps={{ className: activeTabClassName }}
+                  className="flex items-center gap-1.5 self-start text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {t("auth.login")}
+                  <ArrowLeft className="size-4 rtl:rotate-180" />
+                  {t("back")}
                 </Link>
-                <Link
-                  to="/signup"
-                  resetScroll={false}
-                  search={search}
-                  className={tabClassName}
-                  activeProps={{ className: activeTabClassName }}
-                >
-                  {t("auth.signUp")}
-                </Link>
-              </nav>
+              ) : (
+                <nav className="grid grid-cols-2 rounded-full bg-accent p-1">
+                  <Link
+                    to="/login"
+                    resetScroll={false}
+                    search={search}
+                    className={tabClassName}
+                    activeProps={{ className: activeTabClassName }}
+                  >
+                    {t("auth.login")}
+                  </Link>
+                  <Link
+                    to="/signup"
+                    resetScroll={false}
+                    search={search}
+                    className={tabClassName}
+                    activeProps={{ className: activeTabClassName }}
+                  >
+                    {t("auth.signUp")}
+                  </Link>
+                </nav>
+              )}
 
               <Outlet />
             </div>

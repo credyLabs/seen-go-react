@@ -7,9 +7,9 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { PasswordInput } from "@/components/ui/password-input"
 import { useMutation } from "@tanstack/react-query"
-import { Link, createFileRoute } from "@tanstack/react-router"
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router"
 import { Loader2 } from "lucide-react"
-import type * as React from "react"
+import * as React from "react"
 import { useTranslation } from "react-i18next"
 
 export const Route = createFileRoute("/_auth/login")({
@@ -20,6 +20,14 @@ function LoginPage() {
   const { t } = useTranslation()
   const completeAuth = useCompleteAuth()
   const search = Route.useSearch()
+  const navigate = useNavigate()
+  const emailRef = React.useRef<HTMLInputElement>(null)
+
+  // Opens the forgot-password page, carrying over any email typed here
+  const handleForgotPassword = () => {
+    const email = emailRef.current?.value.trim()
+    void navigate({ to: "/forgot-password", search: { ...search, email: email || undefined }, resetScroll: false })
+  }
 
   const signInMutation = useMutation({
     mutationFn: signIn,
@@ -65,6 +73,7 @@ function LoginPage() {
           <Field>
             <FieldLabel htmlFor="email">{t("auth.email")}</FieldLabel>
             <Input
+              ref={emailRef}
               id="email"
               name="email"
               type="email"
@@ -78,9 +87,9 @@ function LoginPage() {
           <Field>
             <div className="flex items-center justify-between gap-2">
               <FieldLabel htmlFor="password">{t("auth.password")}</FieldLabel>
-              {/* TODO: point to the forgot-password route once it exists */}
-              <a
-                href="#"
+              <button
+                type="button"
+                onClick={handleForgotPassword}
                 className={buttonVariants({
                   variant: "link",
                   size: "xs",
@@ -88,7 +97,7 @@ function LoginPage() {
                 })}
               >
                 {t("auth.forgotPassword")}
-              </a>
+              </button>
             </div>
             <PasswordInput
               id="password"

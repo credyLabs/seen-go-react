@@ -137,3 +137,51 @@ export async function confirmSignUp(username: string, code: string) {
   }
   return request<{ message: string }>(withQuery(endpoints.auth.confirm, { username, code }), { method: "POST" })
 }
+
+// Forgot password — FIGMA_FRONTEND_API_SPEC.md §2.4. Dummy while
+// VITE_MOCK_APIS includes passwordReset (or auth).
+const resetMocked = () => isMocked("passwordReset") || isMocked("auth")
+
+// POST /auth/forgot-password?username=… — emails a reset code
+export async function forgotPassword(username: string) {
+  if (resetMocked()) {
+    await mockDelay()
+    if (!username.includes("@")) throw new ApiError(400, "Invalid username")
+    return { message: "Password reset code sent to your email" }
+  }
+  return request<{ message: string }>(withQuery(endpoints.auth.forgotPassword, { username }), { method: "POST" })
+}
+
+export interface VerifiedResetCode {
+  // Seconds the resetToken stays valid
+  expiresIn: number
+  resetToken: string
+  message: string
+}
+
+// POST /auth/verify-reset-code — checks the emailed code and returns the token
+// that authorises POST /auth/reset-password
+export async function verifyResetCode(username: string, confirmationCode: string) {
+  if (resetMocked()) {
+    await mockDelay()
+    // Dummy: any 6-digit code except 000000 works
+    if (!/^\d{6}$/.test(confirmationCode) || confirmationCode === "000000") throw new ApiError(400, "Invalid verification code provided")
+    return { expiresIn: 600, resetToken: `mock-reset-${Date.now()}`, message: "Password reset code verified" }
+  }
+  return request<VerifiedResetCode>(endpoints.auth.verifyResetCode, {
+    method: "POST",
+    body: { username, confirmationCode },
+  })
+}
+
+// POST /auth/reset-password — the new password, with the token from verifyResetCode
+export async function resetPassword(username: string, resetToken: string, newPassword: string) {
+  if (resetMocked()) {
+    await mockDelay()
+    return { message: "Password reset successfully" }
+  }
+  return request<{ message: string }>(endpoints.auth.resetPassword, {
+    method: "POST",
+    body: { username, newPassword, resetToken },
+  })
+}
